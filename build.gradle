@@ -68,7 +68,7 @@ tasks.named('processResources', ProcessResources).configure {
         mod_version: version,
         mod_license: 'All Rights Reserved',
         mod_authors: project.findProperty('project_public_author'),
-        mod_description: 'Weather-driven runoff, puddles, evaporation, absorption, and collection systems for Water Physics Overhaul.',
+        mod_description: 'Original WPO add-on focused on rainfall collection, outdoor runoff, evaporation, absorption, and environmental water handling.',
         wpo_version_range: "[${project.findProperty('wpo_mod_version')},)"
     ]
     inputs.properties replaceProperties

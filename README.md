@@ -1,6 +1,14 @@
 # WPO Environmental Expansion 1.20.1
 
-Forge 1.20.1 port of the Water Physics Overhaul environmental add-on.
+Original add-on mod for Water Physics Overhaul, maintained for Forge 1.20.1.
+
+## Overview
+
+Environmental Expansion adds weather collection and simple outdoor water handling around WPO.
+
+- Rain barrels and cisterns for passive collection
+- Roof collectors, ground basins, and intake grate collectors
+- Support for runoff, evaporation, and absorption systems from the add-on logic
 
 ## Credits
 
