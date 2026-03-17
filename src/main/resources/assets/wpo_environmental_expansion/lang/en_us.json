@@ -1,0 +1,8 @@
+{
+  "itemGroup.wpo_environmental_expansion": "WPO: Environmental Expansion",
+  "block.wpo_environmental_expansion.rain_barrel": "Rain Barrel",
+  "block.wpo_environmental_expansion.cistern": "Cistern",
+  "block.wpo_environmental_expansion.roof_collector": "Roof Collector",
+  "block.wpo_environmental_expansion.ground_basin": "Ground Basin",
+  "block.wpo_environmental_expansion.intake_grate_collector": "Intake Grate Collector"
+}

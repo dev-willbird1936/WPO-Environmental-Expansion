@@ -1,0 +1,103 @@
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+evaluationDependsOn(':water_physics_overhaul_1.20.1')
+
+version = project.findProperty('wpo_environmental_mod_version')
+group = 'net.skds.wpo.environmental'
+
+base {
+    archivesName = "wpo_environmental_expansion-${minecraft_version}"
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                wpo_environmental_expansion {
+                    source sourceSets.main
+                }
+                wpo {
+                    source project(':water_physics_overhaul_1.20.1').sourceSets.main
+                }
+                skds_core {
+                    source project(':skds_core_1.20.1').sourceSets.main
+                }
+            }
+        }
+
+        client {
+            property 'forge.enabledGameTestNamespaces', 'wpo_environmental_expansion'
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', 'wpo_environmental_expansion'
+            args '--nogui'
+        }
+
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', 'wpo_environmental_expansion'
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    implementation project(':water_physics_overhaul_1.20.1')
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    def replaceProperties = [
+        minecraft_version: minecraft_version,
+        minecraft_version_range: minecraft_version_range,
+        forge_version: forge_version,
+        forge_version_range: forge_version_range,
+        loader_version_range: loader_version_range,
+        mod_id: 'wpo_environmental_expansion',
+        mod_name: 'WPO: Environmental Expansion',
+        mod_version: version,
+        mod_license: 'All Rights Reserved',
+        mod_authors: project.findProperty('project_public_author'),
+        mod_description: 'Weather-driven runoff, puddles, evaporation, absorption, and collection systems for Water Physics Overhaul.',
+        wpo_version_range: "[${project.findProperty('wpo_mod_version')},)"
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+            'Specification-Title': 'wpo_environmental_expansion',
+            'Specification-Vendor': project.findProperty('project_public_vendor'),
+            'Specification-Version': '1',
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            'Implementation-Vendor': project.findProperty('project_public_vendor')
+        ])
+    }
+    finalizedBy 'reobfJar'
+}
+
+tasks.register('packageModJar', Copy) {
+    dependsOn tasks.named('reobfJar')
+    from(layout.buildDirectory.file('reobfJar/output.jar'))
+    into(layout.buildDirectory.dir('libs'))
+    rename { "${base.archivesName.get()}-${project.version}.jar" }
+}
+
+tasks.named('build').configure {
+    dependsOn tasks.named('packageModJar')
+}

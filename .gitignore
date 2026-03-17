@@ -1,0 +1,13 @@
+/.gradle/
+/build/
+/run/
+/logs/
+/out/
+/bin/
+/.idea/
+/.vscode/
+/.settings/
+/.project
+/.classpath
+/.factorypath
+/*.iml

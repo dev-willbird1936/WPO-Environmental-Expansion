@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "open=false": {
+      "model": "wpo_environmental_expansion:block/rain_barrel"
+    },
+    "open=true": {
+      "model": "wpo_environmental_expansion:block/rain_barrel_open"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "wpo_environmental_expansion:block/cistern"
+    }
+  }
+}
