@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.skds.wpo.environmental.config.EnvironmentalConfigScreen;
+import net.skds.wpo.environmental.network.EnvPacketHandler;
 
 @Mod(EnvironmentalExpansion.MOD_ID)
 public class EnvironmentalExpansion {
@@ -25,6 +26,8 @@ public class EnvironmentalExpansion {
         EnvironmentalContent.register(modBus);
         EnvironmentalConfig.init();
         MinecraftForge.EVENT_BUS.register(new EnvironmentalEvents());
+        MinecraftForge.EVENT_BUS.register(new BiomeScoutCommand());
+        EnvPacketHandler.init();
     }
 
     private void doClientSetup(final FMLClientSetupEvent event) {

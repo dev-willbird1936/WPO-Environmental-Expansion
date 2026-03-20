@@ -2,7 +2,9 @@ package net.skds.wpo.environmental;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
@@ -13,8 +15,13 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.network.PacketDistributor;
 import net.skds.wpo.WPOConfig;
 import net.skds.wpo.api.WPOFluidAccess;
+import net.skds.wpo.environmental.network.EnvDebugPacket;
+import net.skds.wpo.environmental.network.EnvPacketHandler;
 
 public final class EnvironmentalTicker {
 
@@ -22,11 +29,14 @@ public final class EnvironmentalTicker {
     }
 
     public static void tick(ServerLevel level) {
+        sendDebugPackets(level);
+
         if ((level.getGameTime() % EnvironmentalConfig.COMMON.updateInterval.get()) != 0L) {
             return;
         }
 
         EnvironmentalSavedData data = EnvironmentalSavedData.get(level);
+        sweepEviction(level, data);
         updateDrought(level, data);
         updateAmbientWetness(level, data);
 
@@ -49,13 +59,30 @@ public final class EnvironmentalTicker {
             BlockPos sample = sampleColumn(player.blockPosition(), radius, cursor + i);
             processColumn(level, sample.getX(), sample.getZ(), data, false);
         }
+
+        processFocusedEvaporation(level, data);
+    }
+
+    private static void sweepEviction(ServerLevel level, EnvironmentalSavedData data) {
+        long dayTicks = 24000L;
+        if ((level.getGameTime() % dayTicks) != 0L) {
+            return;
+        }
+        if (level.players().isEmpty()) {
+            return;
+        }
+        int evicted = data.sweepStaleAbsorbedWater(level.getGameTime());
+        if (evicted > 0 && EnvironmentalExpansion.LOGGER.isDebugEnabled()) {
+            EnvironmentalExpansion.LOGGER.debug("Evicted {} stale absorbed-water entries", evicted);
+        }
     }
 
     public static int getCollectorRainMb(ServerLevel level, BlockPos pos, int baseMb) {
         if (baseMb <= 0 || !level.isRainingAt(pos.above())) {
             return 0;
         }
-        double multiplier = getRainIntensity(level, pos, EnvironmentalSavedData.get(level));
+        BiomeEnvironmentProfile profile = BiomeProfileManager.getProfile(level, pos);
+        double multiplier = getRainIntensity(level, pos, EnvironmentalSavedData.get(level), profile) * profile.collectorMultiplier();
         return (int) Mth.clamp(baseMb * multiplier, 0.0D, 8000.0D);
     }
 
@@ -84,11 +111,12 @@ public final class EnvironmentalTicker {
             return;
         }
 
+        BiomeEnvironmentProfile activeProfile = BiomeProfileManager.getActiveProfile(level);
         if (level.isRaining()) {
-            int gain = scaleStep(EnvironmentalConfig.COMMON.ambientWetnessRainGain.get(), getGlobalRainMemoryMultiplier(level, data));
+            int gain = scaleStep(EnvironmentalConfig.COMMON.ambientWetnessRainGain.get(), getGlobalRainMemoryMultiplier(level, data, activeProfile));
             data.adjustAmbientWetness(gain, cap);
         } else {
-            int decay = scaleStep(EnvironmentalConfig.COMMON.ambientWetnessDryDecay.get(), getGlobalDryDecayMultiplier(level, data));
+            int decay = scaleStep(EnvironmentalConfig.COMMON.ambientWetnessDryDecay.get(), getGlobalDryDecayMultiplier(level, data, activeProfile));
             data.adjustAmbientWetness(-decay, cap);
         }
     }
@@ -119,29 +147,73 @@ public final class EnvironmentalTicker {
         }
 
         BlockState groundState = level.getBlockState(groundPos);
+        BiomeEnvironmentProfile profile = BiomeProfileManager.getProfile(level, groundPos);
+        BiomeProfileManager.observe(level, groundPos, groundState);
         if (EnvironmentalConfig.COMMON.snowmelt.get()) {
-            processSnowmelt(level, groundPos, airPos, groundState, data);
+            processSnowmelt(level, groundPos, airPos, groundState, data, profile);
             groundState = level.getBlockState(groundPos);
         }
 
         boolean rainingHere = EnvironmentalConfig.COMMON.rainAccumulation.get() && level.isRainingAt(airPos);
         if (rainingHere) {
-            processRain(level, groundPos, airPos, groundState, data);
+            processRain(level, groundPos, airPos, groundState, data, profile);
         }
 
         if (EnvironmentalConfig.COMMON.distantRainCatchup.get()) {
-            applyAmbientCatchUp(level, groundPos, airPos, groundState, data, burstMaterialization);
+            applyAmbientCatchUp(level, groundPos, airPos, groundState, data, burstMaterialization, profile);
         }
 
         if (EnvironmentalConfig.COMMON.absorption.get() || EnvironmentalConfig.COMMON.evaporation.get()) {
-            processSurfaceWater(level, groundPos, airPos, groundState, data, rainingHere);
+            processSurfaceWater(level, groundPos, airPos, groundState, data, rainingHere, profile);
         }
     }
 
-    private static void processRain(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState, EnvironmentalSavedData data) {
+    private static void processFocusedEvaporation(ServerLevel level, EnvironmentalSavedData data) {
+        if (!EnvironmentalConfig.COMMON.evaporation.get() || level.players().isEmpty()) {
+            return;
+        }
+
+        double override = EnvironmentalConfig.COMMON.evaporationMultiplierOverride.get();
+        if (override <= 1.0D) {
+            return;
+        }
+
+        int focusedChecks = Mth.clamp(Mth.ceil((float) Math.min(override, 96.0D)), 1, 96);
+        int focusedRadius = Math.min(8, EnvironmentalConfig.COMMON.sampleRadius.get());
+
+        for (Player player : level.players()) {
+            long base = mix(level.getGameTime() ^ player.blockPosition().asLong() ^ 0x5A17D3E4C2B19F61L);
+            for (int i = 0; i < focusedChecks; ++i) {
+                BlockPos sample = sampleColumn(player.blockPosition(), focusedRadius, base + i);
+                processEvaporationColumn(level, sample.getX(), sample.getZ(), data);
+            }
+        }
+    }
+
+    private static void processEvaporationColumn(ServerLevel level, int x, int z, EnvironmentalSavedData data) {
+        if (!level.hasChunkAt(new BlockPos(x, level.getMinBuildHeight(), z))) {
+            return;
+        }
+
+        int airY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, x, z);
+        BlockPos airPos = new BlockPos(x, airY, z);
+        BlockPos groundPos = airPos.below();
+        if (groundPos.getY() < level.getMinBuildHeight()) {
+            return;
+        }
+
+        BiomeEnvironmentProfile profile = BiomeProfileManager.getProfile(level, groundPos);
+        evaporateSurfaceWater(level, groundPos, airPos, data, profile);
+    }
+
+    private static void processRain(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
         if (groundState.getBlock() instanceof LayeredCauldronBlock && groundState.hasProperty(BlockStateProperties.LEVEL_CAULDRON)) {
-            if (groundState.getValue(BlockStateProperties.LEVEL_CAULDRON) < 3 && rollChance(level, groundPos, 0.10D * getRainIntensity(level, groundPos, data))) {
-                level.setBlock(groundPos, groundState.cycle(BlockStateProperties.LEVEL_CAULDRON), 3);
+            if (groundState.getValue(BlockStateProperties.LEVEL_CAULDRON) < 3) {
+                SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+                double rainChance = 0.10D * getRainIntensity(level, groundPos, data, profile) * profile.rainChanceMultiplier() * SeasonalModifiers.getRainChanceMultiplier(subSeason);
+                if (rollChance(level, groundPos, rainChance)) {
+                    level.setBlock(groundPos, groundState.cycle(BlockStateProperties.LEVEL_CAULDRON), 3);
+                }
             }
             return;
         }
@@ -152,10 +224,16 @@ public final class EnvironmentalTicker {
         if (!WPOFluidAccess.isChunkLoaded(level, airPos)) {
             return;
         }
+        if (!canHoldSurfacePuddle(level, groundPos, airPos, groundState)) {
+            return;
+        }
 
-        double rainChance = EnvironmentalConfig.COMMON.rainChance.get() * getRainIntensity(level, groundPos, data);
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        double rainChance = EnvironmentalConfig.COMMON.rainChance.get() * getRainIntensity(level, groundPos, data, profile) * profile.rainChanceMultiplier() * SeasonalModifiers.getRainChanceMultiplier(subSeason);
+        rainChance *= DayNightModifiers.getRainChanceMultiplier(level);
         int steps = rollChance(level, airPos, rainChance) ? 1 : 0;
-        if (EnvironmentalConfig.COMMON.floods.get() && level.isThundering() && rollChance(level, airPos.above(), rainChance * 0.5D)) {
+        if (EnvironmentalConfig.COMMON.floods.get() && level.isThundering()
+            && rollChance(level, airPos.above(), rainChance * 0.5D * SeasonalModifiers.getStormMultiplier(subSeason))) {
             steps++;
         }
         if (steps <= 0) {
@@ -163,22 +241,22 @@ public final class EnvironmentalTicker {
         }
 
         if (EnvironmentalConfig.COMMON.absorption.get()) {
-            steps -= data.addAbsorbed(groundPos, steps, getAbsorptionCapacity(level.getBlockState(groundPos)));
+            steps -= data.addAbsorbed(groundPos, steps, getAbsorptionCapacity(level.getBlockState(groundPos), profile, level));
         }
         if (steps > 0) {
             WPOFluidAccess.addWater(level, airPos, steps);
         }
     }
 
-    private static void applyAmbientCatchUp(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState, EnvironmentalSavedData data, boolean burstMaterialization) {
+    private static void applyAmbientCatchUp(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState, EnvironmentalSavedData data, boolean burstMaterialization, BiomeEnvironmentProfile profile) {
         if (!EnvironmentalConfig.COMMON.puddles.get() || !WPOFluidAccess.isChunkLoaded(level, airPos)) {
             return;
         }
-        if (!canReceiveAmbientRain(level, groundPos, airPos, groundState)) {
+        if (!level.isRainingAt(airPos) || !canHoldSurfacePuddle(level, groundPos, airPos, groundState)) {
             return;
         }
 
-        int targetLevels = getAmbientTargetWater(level, groundPos, airPos, data);
+        int targetLevels = getAmbientTargetWater(level, groundPos, airPos, data, profile);
         if (targetLevels <= 0) {
             return;
         }
@@ -190,22 +268,22 @@ public final class EnvironmentalTicker {
 
         int steps = burstMaterialization ? targetLevels - currentWater : 1;
         if (EnvironmentalConfig.COMMON.absorption.get()) {
-            steps -= data.addAbsorbed(groundPos, steps, getAbsorptionCapacity(level.getBlockState(groundPos)));
+            steps -= data.addAbsorbed(groundPos, steps, getAbsorptionCapacity(level.getBlockState(groundPos), profile, level));
         }
         if (steps > 0) {
             WPOFluidAccess.addWater(level, airPos, Math.min(targetLevels - currentWater, steps));
         }
     }
 
-    private static void processSurfaceWater(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState, EnvironmentalSavedData data, boolean rainingHere) {
+    private static void processSurfaceWater(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState, EnvironmentalSavedData data, boolean rainingHere, BiomeEnvironmentProfile profile) {
         int waterAmount = WPOFluidAccess.getWaterAmount(level, airPos);
         if (EnvironmentalConfig.COMMON.absorption.get()) {
-            int absorptionCapacity = getAbsorptionCapacity(groundState);
+            int absorptionCapacity = getAbsorptionCapacity(groundState, profile, level);
             if (absorptionCapacity <= 0) {
                 data.clearAbsorbed(groundPos);
             } else {
                 if (waterAmount > 0 && data.getAbsorbed(groundPos) < absorptionCapacity
-                    && rollChance(level, groundPos.below(), EnvironmentalConfig.COMMON.absorptionChance.get())) {
+                    && rollChance(level, groundPos.below(), EnvironmentalConfig.COMMON.absorptionChance.get() * profile.absorptionMultiplier() * EnvironmentalConfig.COMMON.absorptionMultiplierOverride.get())) {
                     int before = WPOFluidAccess.getWaterAmount(level, airPos);
                     int after = WPOFluidAccess.removeWater(level, airPos, 1);
                     if (before > after) {
@@ -214,7 +292,7 @@ public final class EnvironmentalTicker {
                     }
                 }
                 if (data.getAbsorbed(groundPos) > 0 && shouldRelease(level, groundPos, airPos, data, waterAmount, rainingHere)
-                    && rollChance(level, groundPos.above(), EnvironmentalConfig.COMMON.releaseChance.get() * getReleaseMultiplier(level, groundPos))) {
+                    && rollChance(level, groundPos.above(), EnvironmentalConfig.COMMON.releaseChance.get() * getReleaseMultiplier(level, groundPos, profile))) {
                     int before = WPOFluidAccess.getWaterAmount(level, airPos);
                     int after = WPOFluidAccess.addWater(level, airPos, 1);
                     if (after > before) {
@@ -225,15 +303,56 @@ public final class EnvironmentalTicker {
             }
         }
 
-        if (EnvironmentalConfig.COMMON.evaporation.get() && waterAmount > 0) {
-            double evaporationChance = EnvironmentalConfig.COMMON.evaporationChance.get() * getEvaporationMultiplier(level, groundPos, airPos, data);
-            if (rollChance(level, airPos.north(), evaporationChance)) {
-                WPOFluidAccess.removeWater(level, airPos, 1);
+        if (waterAmount > 0) {
+            spawnDripParticles(level, groundPos, airPos);
+        }
+
+        if (EnvironmentalConfig.COMMON.evaporation.get()) {
+            evaporateSurfaceWater(level, groundPos, airPos, data, profile);
+        }
+    }
+
+    private static void spawnDripParticles(ServerLevel level, BlockPos groundPos, BlockPos airPos) {
+        if (!level.isRainingAt(airPos) && level.canSeeSky(airPos)) {
+            BlockPos belowAir = airPos.below();
+            if (level.getBlockState(belowAir).isAir()) {
+                if (rollChance(level, airPos, 0.015D)) {
+                    double x = airPos.getX() + 0.5D + (level.random.nextDouble() - 0.5D) * 0.6D;
+                    double y = airPos.getY() + 0.05D;
+                    double z = airPos.getZ() + 0.5D + (level.random.nextDouble() - 0.5D) * 0.6D;
+                    level.sendParticles(ParticleTypes.DRIPPING_WATER, x, y, z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                }
             }
         }
     }
 
-    private static void processSnowmelt(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState, EnvironmentalSavedData data) {
+    private static void evaporateSurfaceWater(ServerLevel level, BlockPos groundPos, BlockPos airPos, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
+        BlockPos evaporationPos = getExposedWaterPos(level, groundPos, airPos);
+        if (evaporationPos == null) {
+            return;
+        }
+
+        int waterAmount = WPOFluidAccess.getWaterAmount(level, evaporationPos);
+        if (waterAmount <= 0) {
+            return;
+        }
+
+        double baseMultiplier = getEvaporationMultiplier(level, groundPos, airPos, data, profile);
+        double evaporationChance = EnvironmentalConfig.COMMON.evaporationChance.get() * baseMultiplier;
+        evaporationChance *= EnvironmentalConfig.COMMON.evaporationMultiplierOverride.get();
+        int evaporated = resolveScaledSteps(level, evaporationPos.north(), evaporationChance, waterAmount);
+        if (evaporated > 0) {
+            WPOFluidAccess.removeWater(level, evaporationPos, evaporated);
+            if (rollChance(level, evaporationPos, 0.3D)) {
+                double x = evaporationPos.getX() + 0.5D + (level.random.nextDouble() - 0.5D) * 0.5D;
+                double y = evaporationPos.getY() + 0.5D + (level.random.nextDouble() - 0.5D) * 0.3D;
+                double z = evaporationPos.getZ() + 0.5D + (level.random.nextDouble() - 0.5D) * 0.5D;
+                level.sendParticles(ParticleTypes.POOF, x, y, z, 1, 0.0D, 0.05D, 0.0D, 0.02D);
+            }
+        }
+    }
+
+    private static void processSnowmelt(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
         Block groundBlock = groundState.getBlock();
         if (groundBlock != Blocks.SNOW && groundBlock != Blocks.SNOW_BLOCK) {
             return;
@@ -241,7 +360,12 @@ public final class EnvironmentalTicker {
         if (!level.getBiome(groundPos).value().warmEnoughToRain(groundPos) && level.getMaxLocalRawBrightness(airPos) < 12) {
             return;
         }
-        double meltChance = EnvironmentalConfig.COMMON.snowmeltChance.get() * getReleaseMultiplier(level, groundPos);
+        
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        double meltChance = EnvironmentalConfig.COMMON.snowmeltChance.get() * getReleaseMultiplier(level, groundPos, profile) * profile.snowmeltMultiplier() * SeasonalModifiers.getSnowmeltMultiplier(subSeason);
+        
+        meltChance *= DayNightModifiers.getSnowmeltMultiplier(level, profile);
+        
         if (!rollChance(level, groundPos, meltChance)) {
             return;
         }
@@ -296,78 +420,99 @@ public final class EnvironmentalTicker {
         return Math.max(1, Mth.floor((float) (base * multiplier)));
     }
 
-    private static double getRainIntensity(ServerLevel level, BlockPos pos, EnvironmentalSavedData data) {
-        double intensity = EnvironmentalConfig.COMMON.rainIntensity.get();
+    private static int resolveScaledSteps(ServerLevel level, BlockPos pos, double scaledValue, int maxSteps) {
+        if (scaledValue <= 0.0D || maxSteps <= 0) {
+            return 0;
+        }
+
+        int guaranteed = Mth.floor((float) scaledValue);
+        double fractional = scaledValue - guaranteed;
+        int steps = Math.min(maxSteps, guaranteed);
+        if (steps < maxSteps && fractional > 0.0D && rollChance(level, pos, fractional)) {
+            steps++;
+        }
+        return steps;
+    }
+
+    private static double getRainIntensity(ServerLevel level, BlockPos pos, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
+        double intensity = EnvironmentalConfig.COMMON.rainIntensity.get() * profile.rainIntensityMultiplier();
+        
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        intensity *= SeasonalModifiers.getRainIntensityMultiplier(subSeason);
+        
         if (EnvironmentalConfig.COMMON.floods.get() && level.isThundering()) {
-            intensity *= EnvironmentalConfig.COMMON.stormIntensity.get();
+            intensity *= EnvironmentalConfig.COMMON.stormIntensity.get() * SeasonalModifiers.getStormMultiplier(subSeason);
         }
-        Season season = getSeason(level);
-        if (season == Season.SPRING) {
-            intensity *= EnvironmentalConfig.COMMON.springRunoffMultiplier.get();
-        } else if (season == Season.SUMMER) {
-            intensity *= 0.85D;
-        } else if (season == Season.WINTER) {
-            intensity *= 0.75D;
-        }
+        
         if (EnvironmentalConfig.COMMON.droughts.get() && data.isDroughtActive()) {
-            intensity *= 0.4D;
+            intensity *= Mth.clamp(1.0D - (0.6D * profile.droughtSensitivity() * SeasonalModifiers.getDroughtSensitivity(subSeason)), 0.2D, 1.0D);
         }
+        
         if (level.getBiome(pos).value().getBaseTemperature() < 0.15F) {
             intensity *= 0.75D;
         }
+        
+        intensity *= SeasonalModifiers.getCollectorMultiplier(subSeason);
+        intensity *= DayNightModifiers.getCollectorMultiplier(level, profile);
+        
         return intensity;
     }
 
-    private static double getGlobalRainMemoryMultiplier(ServerLevel level, EnvironmentalSavedData data) {
-        double multiplier = EnvironmentalConfig.COMMON.rainIntensity.get();
+    private static double getGlobalRainMemoryMultiplier(ServerLevel level, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
+        double multiplier = EnvironmentalConfig.COMMON.rainIntensity.get() * profile.rainIntensityMultiplier() * profile.retentionMultiplier();
+        
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        multiplier *= SeasonalModifiers.getRainIntensityMultiplier(subSeason);
+        multiplier *= SeasonalModifiers.getRetentionMultiplier(subSeason);
+        
         if (EnvironmentalConfig.COMMON.floods.get() && level.isThundering()) {
-            multiplier *= EnvironmentalConfig.COMMON.stormIntensity.get();
+            multiplier *= EnvironmentalConfig.COMMON.stormIntensity.get() * SeasonalModifiers.getStormMultiplier(subSeason);
         }
-        Season season = getSeason(level);
-        if (season == Season.SPRING) {
-            multiplier *= EnvironmentalConfig.COMMON.springRunoffMultiplier.get();
-        } else if (season == Season.SUMMER) {
-            multiplier *= 0.85D;
-        } else if (season == Season.WINTER) {
-            multiplier *= 0.75D;
-        }
+        
         if (EnvironmentalConfig.COMMON.droughts.get() && data.isDroughtActive()) {
-            multiplier *= 0.4D;
+            multiplier *= Mth.clamp(1.0D - (0.6D * profile.droughtSensitivity() * SeasonalModifiers.getDroughtSensitivity(subSeason)), 0.2D, 1.0D);
         }
+        
         return multiplier;
     }
 
-    private static double getGlobalDryDecayMultiplier(ServerLevel level, EnvironmentalSavedData data) {
-        double multiplier = 1.0D;
+    private static double getGlobalDryDecayMultiplier(ServerLevel level, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
+        double multiplier = profile.evaporationMultiplier() / Math.max(0.45D, profile.retentionMultiplier());
+        
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        multiplier *= SeasonalModifiers.getEvaporationMultiplier(subSeason);
+        
+        multiplier *= DayNightModifiers.getEvaporationMultiplier(level, profile);
+        
         if (EnvironmentalConfig.COMMON.droughts.get() && data.isDroughtActive()) {
-            multiplier += EnvironmentalConfig.COMMON.droughtEvaporationBonus.get() * 0.35D;
+            multiplier += EnvironmentalConfig.COMMON.droughtEvaporationBonus.get() * 0.35D * profile.droughtSensitivity() * SeasonalModifiers.getDroughtSensitivity(subSeason);
         }
-        Season season = getSeason(level);
-        if (season == Season.SUMMER) {
-            multiplier *= EnvironmentalConfig.COMMON.summerEvaporationMultiplier.get();
-        } else if (season == Season.WINTER) {
-            multiplier *= 0.75D;
-        }
-        if (level.isDay()) {
-            multiplier += 0.2D;
-        }
+        
+        multiplier *= EnvironmentalConfig.COMMON.evaporationMultiplierOverride.get();
+        
         return multiplier;
     }
 
-    private static double getEvaporationMultiplier(ServerLevel level, BlockPos groundPos, BlockPos airPos, EnvironmentalSavedData data) {
-        double multiplier = 1.0D;
+    private static double getEvaporationMultiplier(ServerLevel level, BlockPos groundPos, BlockPos airPos, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
+        double multiplier = profile.evaporationMultiplier();
+        
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        multiplier *= SeasonalModifiers.getEvaporationMultiplier(subSeason);
+        
+        multiplier *= DayNightModifiers.getEvaporationMultiplier(level, profile);
+        
         if (EnvironmentalConfig.COMMON.droughts.get() && data.isDroughtActive()) {
-            multiplier += EnvironmentalConfig.COMMON.droughtEvaporationBonus.get();
+            multiplier += EnvironmentalConfig.COMMON.droughtEvaporationBonus.get() * profile.droughtSensitivity() * SeasonalModifiers.getDroughtSensitivity(subSeason);
         }
-        Season season = getSeason(level);
-        if (season == Season.SUMMER) {
-            multiplier *= EnvironmentalConfig.COMMON.summerEvaporationMultiplier.get();
-        }
-        if (level.canSeeSky(airPos) && level.isDay() && level.getMaxLocalRawBrightness(airPos) >= 13) {
+        
+        if (level.canSeeSky(airPos) && level.getMaxLocalRawBrightness(airPos) >= 13) {
             multiplier += EnvironmentalConfig.COMMON.sunlightEvaporationBonus.get();
         }
-        if (level.getBiome(groundPos).value().getBaseTemperature() >= 1.0F) {
-            multiplier += EnvironmentalConfig.COMMON.hotBiomeEvaporationBonus.get();
+        double biomeTemp = level.getBiome(groundPos).value().getBaseTemperature();
+        if (biomeTemp >= 1.0F) {
+            double heatFactor = Mth.clamp((biomeTemp - 1.0F) / 0.5F, 0.0D, 1.0D);
+            double hotBonus = EnvironmentalConfig.COMMON.hotBiomeEvaporationBonus.get();
+            multiplier += hotBonus * (0.5D + heatFactor * 0.5D);
         }
         if (hasNearbyLava(level, groundPos)) {
             multiplier += EnvironmentalConfig.COMMON.lavaEvaporationBonus.get();
@@ -375,6 +520,7 @@ public final class EnvironmentalTicker {
         if (level.isRainingAt(airPos)) {
             multiplier *= 0.35D;
         }
+        
         return multiplier;
     }
 
@@ -391,28 +537,53 @@ public final class EnvironmentalTicker {
         if (waterAmount >= WPOConfig.MAX_FLUID_LEVEL) {
             return false;
         }
+        // Release when it's DRY (not raining) - simulates drying out
         if (rainingHere) {
-            return true;
+            return false;
         }
         if (EnvironmentalConfig.COMMON.droughts.get() && data.isDroughtActive()) {
             return false;
         }
-        Season season = getSeason(level);
-        return season == Season.SPRING || !level.canSeeSky(airPos) || level.getMaxLocalRawBrightness(groundPos) < 10;
+        return true;
     }
 
-    private static boolean canReceiveAmbientRain(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState) {
+    private static BlockPos getExposedWaterPos(ServerLevel level, BlockPos groundPos, BlockPos airPos) {
+        if (!level.canSeeSky(airPos)) {
+            return null;
+        }
+
+        if (WPOFluidAccess.getWaterAmount(level, airPos) > 0) {
+            return airPos;
+        }
+
+        if (WPOFluidAccess.getWaterAmount(level, groundPos) > 0) {
+            return groundPos;
+        }
+
+        return null;
+    }
+
+    private static boolean canHoldSurfacePuddle(ServerLevel level, BlockPos groundPos, BlockPos airPos, BlockState groundState) {
         if (!level.canSeeSky(airPos)) {
             return false;
         }
         if (!level.getBiome(groundPos).value().warmEnoughToRain(groundPos)) {
             return false;
         }
+        if (!groundState.getFluidState().isEmpty()) {
+            return false;
+        }
+        if (groundState.is(BlockTags.LEAVES)) {
+            return false;
+        }
+        if (!groundState.isFaceSturdy(level, groundPos, Direction.UP)) {
+            return false;
+        }
         Block groundBlock = groundState.getBlock();
         return groundBlock != Blocks.SNOW && groundBlock != Blocks.SNOW_BLOCK;
     }
 
-    private static int getAmbientTargetWater(ServerLevel level, BlockPos groundPos, BlockPos airPos, EnvironmentalSavedData data) {
+    private static int getAmbientTargetWater(ServerLevel level, BlockPos groundPos, BlockPos airPos, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
         int cap = EnvironmentalConfig.COMMON.ambientWetnessCap.get();
         int maxLevels = Math.min(WPOConfig.MAX_FLUID_LEVEL, EnvironmentalConfig.COMMON.ambientMaxPuddleLevels.get());
         if (cap <= 0 || maxLevels <= 0 || data.getAmbientWetness() <= 0) {
@@ -420,7 +591,7 @@ public final class EnvironmentalTicker {
         }
 
         double wetness = data.getAmbientWetness() / (double) cap;
-        double terrainFactor = getTerrainRetentionFactor(level, groundPos);
+        double terrainFactor = getTerrainRetentionFactor(level, groundPos) * profile.retentionMultiplier();
         double noiseFactor = getColumnNoise(level, airPos);
         int target = Mth.clamp(Mth.floor((float) (wetness * terrainFactor * noiseFactor * maxLevels)), 0, maxLevels);
         if (target <= 0 && level.isRainingAt(airPos) && wetness >= 0.25D && terrainFactor >= 0.95D) {
@@ -448,59 +619,153 @@ public final class EnvironmentalTicker {
         return 0.65D + (normalized * 0.7D);
     }
 
-    private static double getReleaseMultiplier(ServerLevel level, BlockPos pos) {
-        double multiplier = 1.0D;
-        Season season = getSeason(level);
-        if (season == Season.SPRING) {
-            multiplier *= EnvironmentalConfig.COMMON.springRunoffMultiplier.get();
-        }
+    private static double getReleaseMultiplier(ServerLevel level, BlockPos pos, BiomeEnvironmentProfile profile) {
+        double multiplier = profile.releaseMultiplier();
+        
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        multiplier *= SeasonalModifiers.getReleaseMultiplier(subSeason);
+        
+        multiplier *= DayNightModifiers.getReleaseMultiplier(level);
+        
         if (level.getBiome(pos).value().warmEnoughToRain(pos) && level.getMaxLocalRawBrightness(pos.above()) >= 12) {
             multiplier *= 1.15D;
         }
         return multiplier;
     }
 
-    private static int getAbsorptionCapacity(BlockState state) {
-        if (state.is(Blocks.DIRT)) {
-            return 3;
+    private static int getAbsorptionCapacity(BlockState state, BiomeEnvironmentProfile profile, ServerLevel level) {
+        int baseCapacity = getBaseAbsorptionCapacity(state);
+        
+        double multiplier = profile.absorptionMultiplier();
+        
+        if (SeasonManager.isSeasonsEnabled()) {
+            SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+            multiplier *= SeasonalModifiers.getAbsorptionMultiplier(subSeason);
+            multiplier *= DayNightModifiers.getAbsorptionMultiplier(level);
         }
-        if (state.is(Blocks.COARSE_DIRT)) {
-            return 2;
-        }
-        if (state.is(Blocks.FARMLAND)) {
-            return 5;
-        }
-        if (state.is(Blocks.SAND)) {
-            return 2;
-        }
-        if (state.is(Blocks.GRAVEL)) {
-            return 1;
-        }
-        if (state.is(Blocks.MUD)) {
-            return 6;
-        }
+
+        multiplier *= EnvironmentalConfig.COMMON.absorptionMultiplierOverride.get();
+        
+        return Math.max(0, Mth.floor((float) (baseCapacity * multiplier)));
+    }
+
+    private static int getBaseAbsorptionCapacity(BlockState state) {
+        Block block = state.getBlock();
+        
+        // Very high absorption - spongy, organic materials
+        if (block == Blocks.MUD) return 6;
+        if (block == Blocks.MYCELIUM) return 4;
+        if (block == Blocks.PODZOL) return 4;
+        if (block == Blocks.MOSS_BLOCK) return 4;
+        if (block == Blocks.MUDDY_MANGROVE_ROOTS) return 4;
+        
+        // High absorption - farmland and grassy earth
+        if (block == Blocks.FARMLAND) return 5;
+        if (block == Blocks.GRASS_BLOCK) return 3;
+        if (block == Blocks.DIRT) return 3;
+        if (block == Blocks.ROOTED_DIRT) return 3;
+        
+        // Medium absorption - sandy materials
+        if (block == Blocks.SAND) return 2;
+        if (block == Blocks.RED_SAND) return 2;
+        
+        // Low absorption - coarse/gravel
+        if (block == Blocks.COARSE_DIRT) return 1;
+        if (block == Blocks.GRAVEL) return 1;
+        
+        // Cave dripstone - water passes through slowly
+        if (block == Blocks.DRIPSTONE_BLOCK) return 1;
+        if (block == Blocks.POINTED_DRIPSTONE) return 1;
+        
+        // Snow - handled by snowmelt system
+        if (block == Blocks.SNOW_BLOCK) return 0;
+        if (block == Blocks.SNOW) return 0;
+        
         return 0;
     }
 
-    private static Season getSeason(ServerLevel level) {
-        if (!EnvironmentalConfig.COMMON.seasons.get()) {
-            return Season.NONE;
+    private static void sendDebugPackets(ServerLevel level) {
+        // Send debug data to all players every 10 ticks
+        if (level.getGameTime() % 10L != 0L || level.players().isEmpty()) {
+            return;
         }
-        long day = level.getDayTime() / 24000L;
-        int seasonLength = Math.max(1, EnvironmentalConfig.COMMON.seasonLengthDays.get());
-        return switch ((int) Math.floorMod(day / seasonLength, 4L)) {
-            case 0 -> Season.SPRING;
-            case 1 -> Season.SUMMER;
-            case 2 -> Season.AUTUMN;
-            default -> Season.WINTER;
-        };
+
+        Player player = level.players().get(0);
+        BlockPos playerPos = player.blockPosition();
+        BlockPos groundPos = new BlockPos(playerPos.getX(), level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, playerPos.getX(), playerPos.getZ()) - 1, playerPos.getZ());
+
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        BiomeEnvironmentProfile profile = BiomeProfileManager.getProfile(level, groundPos);
+        EnvironmentalSavedData data = EnvironmentalSavedData.get(level);
+
+        double evapMult = profile.evaporationMultiplier() * SeasonalModifiers.getEvaporationMultiplier(subSeason) * DayNightModifiers.getEvaporationMultiplier(level, profile);
+        double rainMult = profile.rainChanceMultiplier() * profile.rainIntensityMultiplier() * SeasonalModifiers.getRainIntensityMultiplier(subSeason);
+        double absorbMult = profile.absorptionMultiplier() * SeasonalModifiers.getAbsorptionMultiplier(subSeason) * DayNightModifiers.getAbsorptionMultiplier(level);
+        double releaseMult = profile.releaseMultiplier() * SeasonalModifiers.getReleaseMultiplier(subSeason) * DayNightModifiers.getReleaseMultiplier(level);
+        double snowmeltMult = profile.snowmeltMultiplier() * SeasonalModifiers.getSnowmeltMultiplier(subSeason) * DayNightModifiers.getSnowmeltMultiplier(level, profile);
+        double stormMult = profile.stormMultiplier() * SeasonalModifiers.getStormMultiplier(subSeason);
+
+        int tropicalPhase = SeasonManager.isTropicalCycle() ? (SeasonManager.getTropicalPhase(level) == SeasonManager.TropicalPhase.WET ? 0 : 1) : 0;
+
+        int surfaceWater = WPOFluidAccess.getWaterAmount(level, groundPos.above());
+        int absorbed = data.getAbsorbed(groundPos);
+        int snowLayers = countSnowLayers(level, groundPos);
+
+        // Block player is looking at
+        BlockPos targetPos = BlockPos.ZERO;
+        String targetBlock = "";
+        HitResult hit = player.pick(6.0D, 0.0F, false);
+        if (hit != null && hit.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockHit = (BlockHitResult) hit;
+            targetPos = blockHit.getBlockPos();
+            targetBlock = level.getBlockState(targetPos).getBlock().toString();
+        }
+
+        EnvDebugPacket packet = new EnvDebugPacket(
+                subSeason.index(),
+                SeasonManager.getWorldDay(level),
+                level.getDayTime(),
+                SeasonManager.isSeasonsEnabled(),
+                SeasonManager.isTropicalCycle(),
+                tropicalPhase,
+                level.getBiome(groundPos).unwrapKey().map(Object::toString).orElse("unknown"),
+                level.getBiome(groundPos).value().getBaseTemperature(),
+                profile.archetype().name(),
+                surfaceWater,
+                absorbed,
+                snowLayers,
+                level.isRaining(),
+                level.isThundering(),
+                rainMult,
+                evapMult,
+                absorbMult,
+                releaseMult,
+                snowmeltMult,
+                stormMult,
+                data.isDroughtActive(),
+                EnvironmentalConfig.COMMON.absorption.get(),
+                EnvironmentalConfig.COMMON.evaporation.get(),
+                EnvironmentalConfig.COMMON.snowmelt.get(),
+                EnvironmentalConfig.COMMON.floods.get(),
+                EnvironmentalConfig.COMMON.distantRainCatchup.get(),
+                targetPos,
+                targetBlock
+        );
+
+        EnvPacketHandler.channel().send(PacketDistributor.PLAYER.with(() -> (net.minecraft.server.level.ServerPlayer) player), packet);
     }
 
-    private enum Season {
-        NONE,
-        SPRING,
-        SUMMER,
-        AUTUMN,
-        WINTER
+    private static int countSnowLayers(ServerLevel level, BlockPos groundPos) {
+        int layers = 0;
+        BlockPos pos = groundPos.above();
+        for (int i = 0; i < 8; i++) {
+            if (level.getBlockState(pos).is(Blocks.SNOW)) {
+                layers++;
+                pos = pos.above();
+            } else {
+                break;
+            }
+        }
+        return layers;
     }
 }

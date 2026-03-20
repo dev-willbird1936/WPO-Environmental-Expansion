@@ -58,15 +58,19 @@ public final class EnvironmentalConfig {
         public final ForgeConfigSpec.DoubleValue hotBiomeEvaporationBonus;
         public final ForgeConfigSpec.DoubleValue lavaEvaporationBonus;
         public final ForgeConfigSpec.DoubleValue absorptionChance;
+        public final ForgeConfigSpec.DoubleValue absorptionMultiplierOverride;
         public final ForgeConfigSpec.DoubleValue releaseChance;
         public final ForgeConfigSpec.DoubleValue snowmeltChance;
         public final ForgeConfigSpec.DoubleValue springRunoffMultiplier;
         public final ForgeConfigSpec.DoubleValue summerEvaporationMultiplier;
+        public final ForgeConfigSpec.DoubleValue evaporationMultiplierOverride;
 
         public final ForgeConfigSpec.IntValue droughtThreshold;
         public final ForgeConfigSpec.IntValue droughtDryStep;
         public final ForgeConfigSpec.IntValue droughtWetStep;
         public final ForgeConfigSpec.IntValue seasonLengthDays;
+        public final ForgeConfigSpec.IntValue seasonPhaseLengthDays;
+        public final ForgeConfigSpec.BooleanValue tropicalSeasons;
         public final ForgeConfigSpec.IntValue ambientWetnessCap;
         public final ForgeConfigSpec.IntValue ambientWetnessRainGain;
         public final ForgeConfigSpec.IntValue ambientWetnessDryDecay;
@@ -80,6 +84,7 @@ public final class EnvironmentalConfig {
         public final ForgeConfigSpec.IntValue roofCollectorTransferMb;
         public final ForgeConfigSpec.IntValue basinSurfaceDrainLevels;
         public final ForgeConfigSpec.IntValue grateSurfaceDrainLevels;
+        public final ForgeConfigSpec.IntValue absorptionEvictionDays;
 
         private Common(ForgeConfigSpec.Builder builder) {
             Function<String, ForgeConfigSpec.Builder> translate = key -> builder.translation(EnvironmentalExpansion.MOD_ID + ".config." + key);
@@ -114,7 +119,7 @@ public final class EnvironmentalConfig {
             builder.push("Weather");
             rainChance = translate.apply("rainChance")
                 .comment("Base chance that a sampled rainy column receives a puddle step.")
-                .defineInRange("rainChance", 0.18D, 0.0D, 4.0D);
+                .defineInRange("rainChance", 0.0018D, 0.0D, 4.0D);
             rainIntensity = translate.apply("rainIntensity")
                 .comment("General rain buildup multiplier.")
                 .defineInRange("rainIntensity", 1.0D, 0.0D, 8.0D);
@@ -134,8 +139,14 @@ public final class EnvironmentalConfig {
                 .comment("Dryness removed each environmental update while the level is raining.")
                 .defineInRange("droughtWetStep", 100, 0, 10000);
             seasonLengthDays = translate.apply("seasonLengthDays")
-                .comment("Length of each season in in-game days when seasons are enabled.")
-                .defineInRange("seasonLengthDays", 16, 1, 365);
+                .comment("Length of each main season (Spring/Summer/Autumn/Winter) in in-game days when seasons are enabled.")
+                .defineInRange("seasonLengthDays", 24, 3, 365);
+            seasonPhaseLengthDays = translate.apply("seasonPhaseLengthDays")
+                .comment("Length of each sub-season phase (Early/Mid/Late) in in-game days. A full year is 12 * phaseLength days.")
+                .defineInRange("seasonPhaseLengthDays", 8, 1, 120);
+            tropicalSeasons = translate.apply("tropicalSeasons")
+                .comment("Use tropical wet/dry cycle instead of temperate 4-season cycle. Tropical biomes (desert, savanna, jungle) follow wet/dry instead of Spring/Summer/Autumn/Winter.")
+                .define("tropicalSeasons", false);
             ambientWetnessCap = translate.apply("ambientWetnessCap")
                 .comment("Upper limit for deferred world wetness used to materialize puddles in newly visited areas.")
                 .defineInRange("ambientWetnessCap", 1800, 0, 200000);
@@ -154,6 +165,9 @@ public final class EnvironmentalConfig {
             summerEvaporationMultiplier = translate.apply("summerEvaporationMultiplier")
                 .comment("Multiplier applied to evaporation in summer.")
                 .defineInRange("summerEvaporationMultiplier", 1.4D, 0.0D, 8.0D);
+            evaporationMultiplierOverride = translate.apply("evaporationMultiplierOverride")
+                .comment("Global multiplier for all evaporation. Use /evaporation command to change in-game.")
+                .defineInRange("evaporationMultiplierOverride", 1.0D, 0.0D, Double.MAX_VALUE);
             builder.pop();
 
             builder.push("Hydrology");
@@ -175,6 +189,9 @@ public final class EnvironmentalConfig {
             absorptionChance = translate.apply("absorptionChance")
                 .comment("Base chance that absorbent terrain stores one water step from rainfall or a surface puddle.")
                 .defineInRange("absorptionChance", 0.35D, 0.0D, 4.0D);
+            absorptionMultiplierOverride = translate.apply("absorptionMultiplierOverride")
+                .comment("Global multiplier for absorption capacity and soak rate. Use /absorption command to change in-game.")
+                .defineInRange("absorptionMultiplierOverride", 1.0D, 0.0D, Double.MAX_VALUE);
             releaseChance = translate.apply("releaseChance")
                 .comment("Base chance that saturated terrain releases one stored water step.")
                 .defineInRange("releaseChance", 0.10D, 0.0D, 4.0D);
@@ -198,6 +215,9 @@ public final class EnvironmentalConfig {
             grateSurfaceDrainLevels = translate.apply("grateSurfaceDrainLevels")
                 .comment("Surface-water levels the intake grate collector can collect each cycle.")
                 .defineInRange("grateSurfaceDrainLevels", 3, 0, 8);
+            absorptionEvictionDays = translate.apply("absorptionEvictionDays")
+                .comment("Days of inactivity before a chunk's absorbed-water data is evicted from memory. Lower values reduce memory usage; higher values preserve state longer for returning players.")
+                .defineInRange("absorptionEvictionDays", 7, 1, 90);
             builder.pop();
         }
     }

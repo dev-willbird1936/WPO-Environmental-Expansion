@@ -3,12 +3,14 @@ package net.skds.wpo.environmental;
 import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.longs.Long2IntMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.saveddata.SavedData;
 
 import java.util.UUID;
@@ -22,6 +24,7 @@ public class EnvironmentalSavedData extends SavedData {
 
     private final Long2IntOpenHashMap absorbedWater = new Long2IntOpenHashMap();
     private final transient Object2LongOpenHashMap<UUID> playerChunks = new Object2LongOpenHashMap<>();
+    private final Long2LongOpenHashMap chunkLastVisit = new Long2LongOpenHashMap();
     private int droughtScore;
     private int ambientWetness;
     private transient long runtimeCursor;
@@ -29,6 +32,7 @@ public class EnvironmentalSavedData extends SavedData {
     public EnvironmentalSavedData() {
         absorbedWater.defaultReturnValue(0);
         playerChunks.defaultReturnValue(Long.MIN_VALUE);
+        chunkLastVisit.defaultReturnValue(Long.MIN_VALUE);
     }
 
     public static EnvironmentalSavedData get(ServerLevel level) {
@@ -46,6 +50,12 @@ public class EnvironmentalSavedData extends SavedData {
                 if (amount > 0) {
                     data.absorbedWater.put(entry.getLong("pos"), amount);
                 }
+            }
+        }
+        if (tag.contains("chunkLastVisit", Tag.TAG_COMPOUND)) {
+            CompoundTag cvTag = tag.getCompound("chunkLastVisit");
+            for (String key : cvTag.getAllKeys()) {
+                data.chunkLastVisit.put(Long.parseLong(key), cvTag.getLong(key));
             }
         }
         return data;
@@ -66,6 +76,9 @@ public class EnvironmentalSavedData extends SavedData {
             list.add(cell);
         }
         tag.put(ABSORBED, list);
+        CompoundTag cvTag = new CompoundTag();
+        chunkLastVisit.forEach((chunkKey, tick) -> cvTag.putLong(String.valueOf(chunkKey), tick));
+        tag.put("chunkLastVisit", cvTag);
         return tag;
     }
 
@@ -157,6 +170,38 @@ public class EnvironmentalSavedData extends SavedData {
 
     public boolean updatePlayerChunk(UUID playerId, long chunkKey) {
         long previous = playerChunks.put(playerId, chunkKey);
+        chunkLastVisit.put(chunkKey, runtimeCursor);
         return previous != chunkKey;
+    }
+
+    public int sweepStaleAbsorbedWater(long currentTick) {
+        int evictionThreshold = (int) (EnvironmentalConfig.COMMON.absorptionEvictionDays.get() * 24000L);
+        int evicted = 0;
+        long cutoff = currentTick - evictionThreshold;
+
+        Long2IntOpenHashMap toRemove = null;
+        for (Long2IntMap.Entry entry : absorbedWater.long2IntEntrySet()) {
+            long blockKey = entry.getLongKey();
+            int cx = BlockPos.getX(blockKey) >> 4;
+            int cz = BlockPos.getZ(blockKey) >> 4;
+            long chunkKey = ChunkPos.asLong(cx, cz);
+            long lastVisit = chunkLastVisit.get(chunkKey);
+            if (lastVisit != Long.MIN_VALUE && lastVisit < cutoff) {
+                if (toRemove == null) {
+                    toRemove = new Long2IntOpenHashMap();
+                }
+                toRemove.put(blockKey, entry.getIntValue());
+            }
+        }
+        if (toRemove != null) {
+            for (Long2IntMap.Entry entry : toRemove.long2IntEntrySet()) {
+                absorbedWater.remove(entry.getLongKey());
+                evicted++;
+            }
+        }
+        if (evicted > 0) {
+            setDirty();
+        }
+        return evicted;
     }
 }

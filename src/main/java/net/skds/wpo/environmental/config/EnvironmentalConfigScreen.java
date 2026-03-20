@@ -8,11 +8,12 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.skds.wpo.environmental.BiomeProfileManager;
 import net.skds.wpo.environmental.EnvironmentalConfig;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 
@@ -32,6 +33,7 @@ public class EnvironmentalConfigScreen extends Screen {
     private Page page = Page.SYSTEMS;
     private Button systemsTabButton;
     private Button tuningTabButton;
+    private Button clearModdedSamplesButton;
     private Component statusMessage = CommonComponents.EMPTY;
     private int systemsScroll;
     private int tuningScroll;
@@ -59,64 +61,71 @@ public class EnvironmentalConfigScreen extends Screen {
             .build());
 
         int row = 0;
-        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Rain Accumulation", EnvironmentalConfig.COMMON.rainAccumulation.get(), EnvironmentalConfig.COMMON.rainAccumulation::set);
-        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Puddles", EnvironmentalConfig.COMMON.puddles.get(), EnvironmentalConfig.COMMON.puddles::set);
-        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Distant Rain Catch-up", EnvironmentalConfig.COMMON.distantRainCatchup.get(), EnvironmentalConfig.COMMON.distantRainCatchup::set);
-        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Evaporation", EnvironmentalConfig.COMMON.evaporation.get(), EnvironmentalConfig.COMMON.evaporation::set);
-        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Droughts", EnvironmentalConfig.COMMON.droughts.get(), EnvironmentalConfig.COMMON.droughts::set);
-        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Floods", EnvironmentalConfig.COMMON.floods.get(), EnvironmentalConfig.COMMON.floods::set);
-        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Snowmelt", EnvironmentalConfig.COMMON.snowmelt.get(), EnvironmentalConfig.COMMON.snowmelt::set);
-        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Absorption", EnvironmentalConfig.COMMON.absorption.get(), EnvironmentalConfig.COMMON.absorption::set);
-        addToggle(top + row * ROW_HEIGHT, Page.SYSTEMS, "Seasons", EnvironmentalConfig.COMMON.seasons.get(), EnvironmentalConfig.COMMON.seasons::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Rain Accumulation", EnvironmentalConfig.COMMON.rainAccumulation.get(), EnvironmentalConfig.COMMON.rainAccumulation.getDefault(), EnvironmentalConfig.COMMON.rainAccumulation::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Puddles", EnvironmentalConfig.COMMON.puddles.get(), EnvironmentalConfig.COMMON.puddles.getDefault(), EnvironmentalConfig.COMMON.puddles::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Distant Rain Catch-up", EnvironmentalConfig.COMMON.distantRainCatchup.get(), EnvironmentalConfig.COMMON.distantRainCatchup.getDefault(), EnvironmentalConfig.COMMON.distantRainCatchup::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Evaporation", EnvironmentalConfig.COMMON.evaporation.get(), EnvironmentalConfig.COMMON.evaporation.getDefault(), EnvironmentalConfig.COMMON.evaporation::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Droughts", EnvironmentalConfig.COMMON.droughts.get(), EnvironmentalConfig.COMMON.droughts.getDefault(), EnvironmentalConfig.COMMON.droughts::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Floods", EnvironmentalConfig.COMMON.floods.get(), EnvironmentalConfig.COMMON.floods.getDefault(), EnvironmentalConfig.COMMON.floods::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Snowmelt", EnvironmentalConfig.COMMON.snowmelt.get(), EnvironmentalConfig.COMMON.snowmelt.getDefault(), EnvironmentalConfig.COMMON.snowmelt::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Absorption", EnvironmentalConfig.COMMON.absorption.get(), EnvironmentalConfig.COMMON.absorption.getDefault(), EnvironmentalConfig.COMMON.absorption::set);
+        addToggle(top + row * ROW_HEIGHT, Page.SYSTEMS, "Seasons", EnvironmentalConfig.COMMON.seasons.get(), EnvironmentalConfig.COMMON.seasons.getDefault(), EnvironmentalConfig.COMMON.seasons::set);
 
         row = 0;
-        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Update Interval", EnvironmentalConfig.COMMON.updateInterval.get(), 1, 40, EnvironmentalConfig.COMMON.updateInterval::set);
-        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Sample Radius", EnvironmentalConfig.COMMON.sampleRadius.get(), 4, 96, EnvironmentalConfig.COMMON.sampleRadius::set);
-        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Checks Per Player", EnvironmentalConfig.COMMON.columnChecksPerPlayer.get(), 1, 64, EnvironmentalConfig.COMMON.columnChecksPerPlayer::set);
-        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Arrival Checks", EnvironmentalConfig.COMMON.arrivalColumnChecks.get(), 0, 256, EnvironmentalConfig.COMMON.arrivalColumnChecks::set);
-        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Rain Intensity", EnvironmentalConfig.COMMON.rainIntensity.get(), 0.0D, 8.0D, EnvironmentalConfig.COMMON.rainIntensity::set);
-        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Storm Intensity", EnvironmentalConfig.COMMON.stormIntensity.get(), 1.0D, 12.0D, EnvironmentalConfig.COMMON.stormIntensity::set);
-        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Collector Efficiency", EnvironmentalConfig.COMMON.collectorEfficiency.get(), 0.0D, 8.0D, EnvironmentalConfig.COMMON.collectorEfficiency::set);
-        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Evaporation Chance", EnvironmentalConfig.COMMON.evaporationChance.get(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.evaporationChance::set);
-        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Absorption Chance", EnvironmentalConfig.COMMON.absorptionChance.get(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.absorptionChance::set);
-        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Ambient Wetness Cap", EnvironmentalConfig.COMMON.ambientWetnessCap.get(), 0, 200_000, EnvironmentalConfig.COMMON.ambientWetnessCap::set);
-        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Ambient Rain Gain", EnvironmentalConfig.COMMON.ambientWetnessRainGain.get(), 0, 1000, EnvironmentalConfig.COMMON.ambientWetnessRainGain::set);
-        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Ambient Dry Decay", EnvironmentalConfig.COMMON.ambientWetnessDryDecay.get(), 0, 1000, EnvironmentalConfig.COMMON.ambientWetnessDryDecay::set);
-        addIntField(top + row * ROW_HEIGHT, Page.TUNING, "Ambient Max Levels", EnvironmentalConfig.COMMON.ambientMaxPuddleLevels.get(), 0, 8, EnvironmentalConfig.COMMON.ambientMaxPuddleLevels::set);
+        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Update Interval", EnvironmentalConfig.COMMON.updateInterval.get(), EnvironmentalConfig.COMMON.updateInterval.getDefault(), 1, 40, EnvironmentalConfig.COMMON.updateInterval::set);
+        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Sample Radius", EnvironmentalConfig.COMMON.sampleRadius.get(), EnvironmentalConfig.COMMON.sampleRadius.getDefault(), 4, 96, EnvironmentalConfig.COMMON.sampleRadius::set);
+        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Checks Per Player", EnvironmentalConfig.COMMON.columnChecksPerPlayer.get(), EnvironmentalConfig.COMMON.columnChecksPerPlayer.getDefault(), 1, 64, EnvironmentalConfig.COMMON.columnChecksPerPlayer::set);
+        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Arrival Checks", EnvironmentalConfig.COMMON.arrivalColumnChecks.get(), EnvironmentalConfig.COMMON.arrivalColumnChecks.getDefault(), 0, 256, EnvironmentalConfig.COMMON.arrivalColumnChecks::set);
+        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Rain Chance", EnvironmentalConfig.COMMON.rainChance.get(), EnvironmentalConfig.COMMON.rainChance.getDefault(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.rainChance::set);
+        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Rain Intensity", EnvironmentalConfig.COMMON.rainIntensity.get(), EnvironmentalConfig.COMMON.rainIntensity.getDefault(), 0.0D, 8.0D, EnvironmentalConfig.COMMON.rainIntensity::set);
+        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Storm Intensity", EnvironmentalConfig.COMMON.stormIntensity.get(), EnvironmentalConfig.COMMON.stormIntensity.getDefault(), 1.0D, 12.0D, EnvironmentalConfig.COMMON.stormIntensity::set);
+        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Collector Efficiency", EnvironmentalConfig.COMMON.collectorEfficiency.get(), EnvironmentalConfig.COMMON.collectorEfficiency.getDefault(), 0.0D, 8.0D, EnvironmentalConfig.COMMON.collectorEfficiency::set);
+        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Evaporation Chance", EnvironmentalConfig.COMMON.evaporationChance.get(), EnvironmentalConfig.COMMON.evaporationChance.getDefault(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.evaporationChance::set);
+        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Absorption Chance", EnvironmentalConfig.COMMON.absorptionChance.get(), EnvironmentalConfig.COMMON.absorptionChance.getDefault(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.absorptionChance::set);
+        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Ambient Wetness Cap", EnvironmentalConfig.COMMON.ambientWetnessCap.get(), EnvironmentalConfig.COMMON.ambientWetnessCap.getDefault(), 0, 200_000, EnvironmentalConfig.COMMON.ambientWetnessCap::set);
+        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Ambient Rain Gain", EnvironmentalConfig.COMMON.ambientWetnessRainGain.get(), EnvironmentalConfig.COMMON.ambientWetnessRainGain.getDefault(), 0, 1000, EnvironmentalConfig.COMMON.ambientWetnessRainGain::set);
+        addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Ambient Dry Decay", EnvironmentalConfig.COMMON.ambientWetnessDryDecay.get(), EnvironmentalConfig.COMMON.ambientWetnessDryDecay.getDefault(), 0, 1000, EnvironmentalConfig.COMMON.ambientWetnessDryDecay::set);
+        addIntField(top + row * ROW_HEIGHT, Page.TUNING, "Ambient Max Levels", EnvironmentalConfig.COMMON.ambientMaxPuddleLevels.get(), EnvironmentalConfig.COMMON.ambientMaxPuddleLevels.getDefault(), 0, 8, EnvironmentalConfig.COMMON.ambientMaxPuddleLevels::set);
 
+        this.addRenderableWidget(Button.builder(Component.literal("Defaults"), button -> loadDefaults())
+            .bounds(centerX - 154, this.height - 28, 100, 20)
+            .build());
         this.addRenderableWidget(Button.builder(Component.literal("Save"), button -> saveAndClose())
-            .bounds(centerX - 154, this.height - 28, 150, 20)
+            .bounds(centerX - 50, this.height - 28, 100, 20)
             .build());
         this.addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, button -> onClose())
-            .bounds(centerX + 4, this.height - 28, 150, 20)
+            .bounds(centerX + 54, this.height - 28, 100, 20)
+            .build());
+        clearModdedSamplesButton = this.addRenderableWidget(Button.builder(Component.literal("Clear Modded Biome Samples"), button -> clearModdedBiomeSamples())
+            .bounds(centerX - 100, this.height - 56, 200, 20)
             .build());
 
         updatePageState();
     }
 
-    private void addToggle(int y, Page page, String label, boolean initialValue, Consumer<Boolean> setter) {
+    private void addToggle(int y, Page page, String label, boolean initialValue, boolean defaultValue, Consumer<Boolean> setter) {
         int centerX = this.width / 2;
         CycleButton<Boolean> button = this.addRenderableWidget(CycleButton.booleanBuilder(CommonComponents.OPTION_ON, CommonComponents.OPTION_OFF)
             .withInitialValue(initialValue)
             .displayOnlyValue()
             .create(centerX + CONTROL_X_OFFSET, y, CONTROL_WIDTH, 20, CommonComponents.EMPTY));
-        toggleOptions.add(new ToggleOption(Component.literal(label), button, setter, y, page));
+        toggleOptions.add(new ToggleOption(Component.literal(label), button, setter, defaultValue, y, page));
     }
 
-    private void addIntField(int y, Page page, String label, int initialValue, int min, int max, IntConsumer setter) {
+    private void addIntField(int y, Page page, String label, int initialValue, int defaultValue, int min, int max, IntConsumer setter) {
         int centerX = this.width / 2;
         EditBox box = new EditBox(this.font, centerX + CONTROL_X_OFFSET, y, CONTROL_WIDTH, 20, Component.literal(label));
         box.setValue(String.valueOf(initialValue));
         this.addRenderableWidget(box);
-        intOptions.add(new IntOption(Component.literal(label), box, setter, min, max, y, page));
+        intOptions.add(new IntOption(Component.literal(label), box, setter, min, max, defaultValue, y, page));
     }
 
-    private void addDoubleField(int y, Page page, String label, double initialValue, double min, double max, Consumer<Double> setter) {
+    private void addDoubleField(int y, Page page, String label, double initialValue, double defaultValue, double min, double max, Consumer<Double> setter) {
         int centerX = this.width / 2;
         EditBox box = new EditBox(this.font, centerX + CONTROL_X_OFFSET, y, CONTROL_WIDTH, 20, Component.literal(label));
-        box.setValue(trimDouble(initialValue));
+        box.setValue(formatDouble(initialValue));
         this.addRenderableWidget(box);
-        doubleOptions.add(new DoubleOption(Component.literal(label), box, setter, min, max, y, page));
+        doubleOptions.add(new DoubleOption(Component.literal(label), box, setter, min, max, defaultValue, y, page));
     }
 
     private void switchPage(Page page) {
@@ -131,9 +140,27 @@ public class EnvironmentalConfigScreen extends Screen {
         int scroll = getScroll(page);
         int viewportTop = LIST_TOP;
         int viewportBottom = this.height - LIST_BOTTOM_PADDING;
+        clearModdedSamplesButton.visible = true;
+        clearModdedSamplesButton.active = true;
         toggleOptions.forEach(option -> option.updateLayout(page, scroll, viewportTop, viewportBottom));
         intOptions.forEach(option -> option.updateLayout(page, scroll, viewportTop, viewportBottom));
         doubleOptions.forEach(option -> option.updateLayout(page, scroll, viewportTop, viewportBottom));
+    }
+
+    private void loadDefaults() {
+        toggleOptions.forEach(option -> option.button().setValue(option.defaultValue()));
+        intOptions.forEach(option -> option.box().setValue(String.valueOf(option.defaultValue())));
+        doubleOptions.forEach(option -> option.box().setValue(formatDouble(option.defaultValue())));
+        statusMessage = Component.literal("Defaults loaded. Press Save to apply.");
+    }
+
+    private void clearModdedBiomeSamples() {
+        int cleared = BiomeProfileManager.clearModdedSamplingData();
+        if (cleared > 0) {
+            statusMessage = Component.literal("Cleared sampled data for " + cleared + " modded biomes.");
+        } else {
+            statusMessage = Component.literal("No modded biome sampled data was found.");
+        }
     }
 
     private void clampScroll() {
@@ -216,11 +243,12 @@ public class EnvironmentalConfigScreen extends Screen {
         return Mth.clamp(Double.parseDouble(text.trim()), min, max);
     }
 
-    private static String trimDouble(double value) {
-        if (Math.abs(value - Math.rint(value)) < 1.0E-6D) {
-            return Integer.toString((int) Math.rint(value));
+    private static String formatDouble(double value) {
+        BigDecimal decimal = BigDecimal.valueOf(value).stripTrailingZeros();
+        if (decimal.scale() < 0) {
+            decimal = decimal.setScale(0);
         }
-        return String.format(Locale.ROOT, "%.2f", value);
+        return decimal.toPlainString();
     }
 
     @Override
@@ -259,13 +287,13 @@ public class EnvironmentalConfigScreen extends Screen {
 
         guiGraphics.drawCenteredString(this.font,
             Component.literal("For extended tuning beyond this screen, edit the TOML directly."),
-            centerX, this.height - 52, 0xC0C0C0);
+            centerX, this.height - 76, 0xC0C0C0);
 
         int maxScroll = getMaxScroll(page);
         if (maxScroll > 0) {
             guiGraphics.drawCenteredString(this.font,
                 Component.literal("Mouse wheel to scroll"),
-                centerX, this.height - 64, 0xA0A0A0);
+                centerX, this.height - 88, 0xA0A0A0);
         }
 
         if (!statusMessage.getString().isEmpty()) {
@@ -288,7 +316,7 @@ public class EnvironmentalConfigScreen extends Screen {
         void updateLayout(Page page, int scroll, int viewportTop, int viewportBottom);
     }
 
-    private record ToggleOption(Component label, CycleButton<Boolean> button, Consumer<Boolean> setter, int baseY, Page page) implements PagedOption {
+    private record ToggleOption(Component label, CycleButton<Boolean> button, Consumer<Boolean> setter, boolean defaultValue, int baseY, Page page) implements PagedOption {
         @Override
         public void updateLayout(Page currentPage, int scroll, int viewportTop, int viewportBottom) {
             int y = baseY - scroll;
@@ -303,7 +331,7 @@ public class EnvironmentalConfigScreen extends Screen {
         }
     }
 
-    private record IntOption(Component label, EditBox box, IntConsumer setter, int min, int max, int baseY, Page page) implements PagedOption {
+    private record IntOption(Component label, EditBox box, IntConsumer setter, int min, int max, int defaultValue, int baseY, Page page) implements PagedOption {
         @Override
         public void updateLayout(Page currentPage, int scroll, int viewportTop, int viewportBottom) {
             int y = baseY - scroll;
@@ -319,7 +347,7 @@ public class EnvironmentalConfigScreen extends Screen {
         }
     }
 
-    private record DoubleOption(Component label, EditBox box, Consumer<Double> setter, double min, double max, int baseY, Page page) implements PagedOption {
+    private record DoubleOption(Component label, EditBox box, Consumer<Double> setter, double min, double max, double defaultValue, int baseY, Page page) implements PagedOption {
         @Override
         public void updateLayout(Page currentPage, int scroll, int viewportTop, int viewportBottom) {
             int y = baseY - scroll;

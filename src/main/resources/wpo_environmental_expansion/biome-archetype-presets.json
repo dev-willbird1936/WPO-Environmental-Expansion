@@ -1,0 +1,2580 @@
+{
+  "generatedAt": "2026-03-20",
+  "biomes": {
+    "biomeswevegone:allium_shrubland": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.84,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:amaranth_grassland": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.84,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:araucaria_savanna": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.91,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:aspen_boreal": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.9,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:atacama_outback": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:baobab_savanna": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.88,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:basalt_barrera": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.98,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:bayou": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.98,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:black_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.86,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:canadian_shield": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.78,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:cika_woods": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.85,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:coconino_meadow": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.72,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:coniferous_forest": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.95,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:crag_gardens": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.69,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:crimson_tundra": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.8,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:cypress_swamplands": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.97,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:cypress_wetlands": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.98,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:dacite_ridges": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.78,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:dacite_shore": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.83,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:dead_sea": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:ebony_woods": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.7,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:enchanted_tangle": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.68,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:eroded_borealis": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.79,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:firecracker_chaparral": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.87,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:forgotten_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.61,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:fragment_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.86,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:frosted_coniferous_forest": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.91,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:frosted_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.96,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:howling_peaks": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.96,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:ironwood_gour": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.84,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:jacaranda_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.9,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:lush_stacks": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.82,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:maple_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.96,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:mojave_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:orchard": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.72,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:overgrowth_woodlands": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.82,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:pale_bog": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.97,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:prairie": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.78,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:pumpkin_valley": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.8,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:rainbow_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.95,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:red_rock_peaks": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.94,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:red_rock_valley": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.88,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:redwood_thicket": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.67,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:rose_fields": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.73,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:rugged_badlands": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.93,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:sakura_grove": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.79,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:shattered_glacier": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.91,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:sierra_badlands": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.93,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:skyris_vale": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.83,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:temperate_grove": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.9,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:tropical_rainforest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.99,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:weeping_witch_forest": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.78,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:white_mangrove_marshes": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.97,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:windswept_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 1.0,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "biomeswevegone:zelkova_forest": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.78,
+      "sourceMod": "Oh The Biomes We've Gone"
+    },
+    "terralith:alpha_islands": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.74,
+      "sourceMod": "Terralith"
+    },
+    "terralith:alpha_islands_winter": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.83,
+      "sourceMod": "Terralith"
+    },
+    "terralith:alpine_highlands": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.95,
+      "sourceMod": "Terralith"
+    },
+    "terralith:amethyst_canyon": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.76,
+      "sourceMod": "Terralith"
+    },
+    "terralith:amethyst_rainforest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:ancient_sands": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:arid_highlands": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.96,
+      "sourceMod": "Terralith"
+    },
+    "terralith:ashen_savanna": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.9,
+      "sourceMod": "Terralith"
+    },
+    "terralith:basalt_cliffs": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.94,
+      "sourceMod": "Terralith"
+    },
+    "terralith:birch_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.9,
+      "sourceMod": "Terralith"
+    },
+    "terralith:blooming_plateau": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.94,
+      "sourceMod": "Terralith"
+    },
+    "terralith:blooming_valley": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.91,
+      "sourceMod": "Terralith"
+    },
+    "terralith:brushland": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.72,
+      "sourceMod": "Terralith"
+    },
+    "terralith:bryce_canyon": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:caldera": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.94,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cloud_forest": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.84,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cold_shrubland": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.9,
+      "sourceMod": "Terralith"
+    },
+    "terralith:desert_canyon": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:desert_oasis": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.86,
+      "sourceMod": "Terralith"
+    },
+    "terralith:desert_spires": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:emerald_peaks": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.73,
+      "sourceMod": "Terralith"
+    },
+    "terralith:forested_highlands": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.79,
+      "sourceMod": "Terralith"
+    },
+    "terralith:fractured_savanna": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.89,
+      "sourceMod": "Terralith"
+    },
+    "terralith:frozen_cliffs": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.84,
+      "sourceMod": "Terralith"
+    },
+    "terralith:glacial_chasm": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.98,
+      "sourceMod": "Terralith"
+    },
+    "terralith:granite_cliffs": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.9,
+      "sourceMod": "Terralith"
+    },
+    "terralith:gravel_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:gravel_desert": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.7,
+      "sourceMod": "Terralith"
+    },
+    "terralith:haze_mountain": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.81,
+      "sourceMod": "Terralith"
+    },
+    "terralith:highlands": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.97,
+      "sourceMod": "Terralith"
+    },
+    "terralith:hot_shrubland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.78,
+      "sourceMod": "Terralith"
+    },
+    "terralith:ice_marsh": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.94,
+      "sourceMod": "Terralith"
+    },
+    "terralith:jungle_mountains": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.97,
+      "sourceMod": "Terralith"
+    },
+    "terralith:lavender_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.78,
+      "sourceMod": "Terralith"
+    },
+    "terralith:lavender_valley": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.78,
+      "sourceMod": "Terralith"
+    },
+    "terralith:lush_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:lush_valley": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.88,
+      "sourceMod": "Terralith"
+    },
+    "terralith:mirage_isles": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.69,
+      "sourceMod": "Terralith"
+    },
+    "terralith:moonlight_grove": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.72,
+      "sourceMod": "Terralith"
+    },
+    "terralith:moonlight_valley": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.71,
+      "sourceMod": "Terralith"
+    },
+    "terralith:mountain_steppe": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.83,
+      "sourceMod": "Terralith"
+    },
+    "terralith:sandstone_valley": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.98,
+      "sourceMod": "Terralith"
+    },
+    "terralith:savanna_badlands": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.93,
+      "sourceMod": "Terralith"
+    },
+    "terralith:savanna_slopes": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.9,
+      "sourceMod": "Terralith"
+    },
+    "terralith:scarlet_mountains": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.72,
+      "sourceMod": "Terralith"
+    },
+    "terralith:shrubland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.84,
+      "sourceMod": "Terralith"
+    },
+    "terralith:siberian_grove": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.94,
+      "sourceMod": "Terralith"
+    },
+    "terralith:siberian_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.97,
+      "sourceMod": "Terralith"
+    },
+    "terralith:skylands": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.55,
+      "sourceMod": "Terralith"
+    },
+    "terralith:skylands_autumn": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.56,
+      "sourceMod": "Terralith"
+    },
+    "terralith:skylands_spring": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.56,
+      "sourceMod": "Terralith"
+    },
+    "terralith:skylands_summer": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.58,
+      "sourceMod": "Terralith"
+    },
+    "terralith:skylands_winter": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.62,
+      "sourceMod": "Terralith"
+    },
+    "terralith:snowy_badlands": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.88,
+      "sourceMod": "Terralith"
+    },
+    "terralith:snowy_cherry_grove": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.86,
+      "sourceMod": "Terralith"
+    },
+    "terralith:snowy_maple_forest": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.83,
+      "sourceMod": "Terralith"
+    },
+    "terralith:snowy_shield": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.79,
+      "sourceMod": "Terralith"
+    },
+    "terralith:stony_spires": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.73,
+      "sourceMod": "Terralith"
+    },
+    "terralith:temperate_highlands": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:tropical_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.98,
+      "sourceMod": "Terralith"
+    },
+    "terralith:volcanic_crater": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:volcanic_peaks": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:warm_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.83,
+      "sourceMod": "Terralith"
+    },
+    "terralith:warped_mesa": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.9,
+      "sourceMod": "Terralith"
+    },
+    "terralith:white_cliffs": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.86,
+      "sourceMod": "Terralith"
+    },
+    "terralith:white_mesa": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.94,
+      "sourceMod": "Terralith"
+    },
+    "terralith:windswept_spires": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.81,
+      "sourceMod": "Terralith"
+    },
+    "terralith:yosemite_cliffs": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.91,
+      "sourceMod": "Terralith"
+    },
+    "terralith:yosemite_lowlands": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.89,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/andesite_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.35,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/desert_caves": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.9,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/diorite_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.35,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/fungal_caves": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.55,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/granite_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.35,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/ice_caves": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.74,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/infested_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.3,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/thermal_caves": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.8,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/underground_jungle": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.87,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/crystal_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.41,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/deep_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.39,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/frostfire_caves": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.76,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/mantle_caves": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.84,
+      "sourceMod": "Terralith"
+    },
+    "terralith:cave/tuff_caves": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.72,
+      "sourceMod": "Terralith"
+    },
+    "regions_unexplored:alpha_grove": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.54,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:ancient_delta": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.83,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:arid_mountains": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.91,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:ashen_woodland": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.89,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:autumnal_maple_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.84,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:bamboo_forest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.77,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:baobab_savanna": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.85,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:barley_fields": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.88,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:bayou": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.95,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:bioshroom_caves": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.48,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:blackstone_basin": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.88,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:blackwood_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.86,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:boreal_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.94,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:chalk_cliffs": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.88,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:clover_plains": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.91,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:cold_boreal_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.93,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:cold_deciduous_forest": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.71,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:cold_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.97,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:deciduous_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.96,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:dry_bushland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.9,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:eucalyptus_forest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.77,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:fen": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.98,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:flower_fields": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.67,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:frozen_pine_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.9,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:frozen_tundra": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.98,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:fungal_fen": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.93,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:glistering_meadow": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.84,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:golden_boreal_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.89,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:grassland": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.72,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:grassy_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.99,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:gravel_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.95,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:highland_fields": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.93,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:hyacinth_deeps": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.58,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:icy_heights": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.96,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:infernal_holt": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.99,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:joshua_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.98,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:magnolia_woodland": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.83,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:maple_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.9,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:marsh": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.97,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:mauve_hills": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.74,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:mountains": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.91,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:muddy_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.94,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:mycotoxic_undergrowth": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.66,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:old_growth_bayou": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.99,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:orchard": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.82,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:poppy_fields": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.9,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:prairie": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.96,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:prismachasm": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.55,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:pumpkin_fields": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.88,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:rainforest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.99,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:redstone_abyss": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.93,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:redstone_caves": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.68,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:redwoods": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.84,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:rocky_meadow": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.91,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:rocky_reef": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.97,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:saguaro_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:scorching_caves": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.98,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:shrubland": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.93,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:silver_birch_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.86,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:sparse_rainforest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.98,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:sparse_redwoods": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.8,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:spires": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.97,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:steppe": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.87,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:temperate_grove": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.79,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:towering_cliffs": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.88,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:tropical_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.92,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:tropics": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.96,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:willow_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.84,
+      "sourceMod": "Regions Unexplored"
+    },
+    "wythers:ancient_copper_beech_forest": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.94,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:ancient_emerald_beech_forest": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.86,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:ancient_golden_beech_forest": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.94,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:ancient_moss_forest": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.85,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:ancient_mossy_swamp": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:ancient_oak_swamp": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:ancient_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:andesite_crags": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.83,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:aspen_crags": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.81,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:autumnal_birch_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.87,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:autumnal_crags": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:autumnal_flower_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.85,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:autumnal_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:autumnal_forest_edge": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.63,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:autumnal_plains": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.65,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:autumnal_swamp": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.72,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:ayers_rock": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:badlands_canyon": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.77,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:badlands_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:badlands_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.68,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:bamboo_jungle_canyon": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:bamboo_jungle_highlands": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.79,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:bamboo_jungle_swamp": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.88,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:bamboo_swamp": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.86,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:bayou": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.74,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:berry_bog": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.82,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:billabong": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:birch_swamp": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.96,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:birch_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:black_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.91,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:black_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.94,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:boreal_forest_red": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:boreal_forest_yellow": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:cactus_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:calcite_caverns": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.78,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:calcite_coast": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:chaparral": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.92,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:coastal_mangroves": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:cold_island": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.86,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:cold_plains": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.75,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:cold_stony_shore": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:cool_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.88,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:cool_forest_edge": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:cool_plains": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.83,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:cool_stony_canyons": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:cool_stony_peaks": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:crimson_tundra": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.96,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:danakil_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:deep_dark_forest": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.66,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:deep_dark_incursion": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.59,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:deep_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:deep_desert_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:deep_icy_ocean": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.66,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:deep_snowy_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:deep_underground": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.46,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:deepslate_shore": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:desert_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:desert_island": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.88,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:desert_lakes": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.86,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:desert_pinnacles": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.87,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:desert_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:dripleaf_swamp": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.82,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:dry_savanna": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.93,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:dry_tropical_forest": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:dry_tropical_grassland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.82,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:eucalyptus_deanei_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.83,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:eucalyptus_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.78,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:eucalyptus_jungle_canyon": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.79,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:eucalyptus_salubris_woodland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.96,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:eucalyptus_woodland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.96,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:fen": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:flooded_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.93,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:flooded_rainforest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.93,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:flooded_savanna": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:flooded_temperate_rainforest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.74,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:flowering_pantanal": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:forbidden_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.86,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:forest_edge": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.8,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:forested_highlands": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:frigid_island": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.58,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:frozen_island": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.7,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:fungous_dripstone_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.52,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:giant_sequoia_forest": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:glacial_cliffs": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.92,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:granite_canyon": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:gravelly_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:gravelly_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:guelta": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:harvest_fields": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.79,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:highland_plains": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.87,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:highland_tropical_rainforest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.89,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:highlands": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:huangshan_highlands": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:humid_tropical_grassland": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.83,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:ice_cap": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.74,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:icy_crags": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.96,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:icy_ocean": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.67,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:icy_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.82,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:icy_shore": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.78,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:icy_volcano": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:jacaranda_savanna": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.81,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:jade_highlands": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:jungle_canyon": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.94,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:jungle_island": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:jungle_river": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:kwongan_heath": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.96,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:lantern_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.86,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:lapacho_plains": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.82,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:larch_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:lichenous_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.58,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:lichenous_dripstone_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.58,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:lush_dripstone_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.58,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:lush_fungous_dripstone_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.58,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:lush_shroom_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.58,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:maple_mountains": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:marsh": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:mediterranean_island": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.89,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:mediterranean_island_thermal_springs": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.88,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:mossy_caves": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.57,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:mossy_dripstone_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.56,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:mud_pools": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:mushroom_caves": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.55,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:mushroom_island": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.62,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:old_growth_taiga_crags": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.83,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:old_growth_taiga_swamp": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.88,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:outback": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:outback_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:pantanal": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.76,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:phantasmal_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.66,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:phantasmal_swamp": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.78,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:pine_barrens": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.69,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:red_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:red_rock_canyon": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.74,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:sakura_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.72,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:salt_lakes_pink": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:salt_lakes_turquoise": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:salt_lakes_white": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:sand_dunes": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.7,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:sandy_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:savanna_badlands": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:savanna_basaltic_incursions": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.99,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:savanna_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.76,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:scrub_forest": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:scrubland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:snowy_bog": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.79,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:snowy_canyon": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.88,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:snowy_fen": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.82,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:snowy_peaks": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.97,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:snowy_thermal_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:snowy_tundra": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.78,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:sparse_bamboo_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:sparse_eucalyptus_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.83,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:sparse_eucalyptus_woodland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:spring_flower_fields": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.78,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:spring_flower_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.8,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:stony_canyon": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.74,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:subtropical_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.72,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:subtropical_forest_edge": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:subtropical_grassland": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.88,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:taiga_crags": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.93,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tangled_forest": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:temperate_island": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:temperate_rainforest": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.79,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:temperate_rainforest_crags": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.77,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tepui": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.68,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:thermal_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.92,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:thermal_taiga_crags": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tibesti_mountains": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.63,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tropical_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.94,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tropical_forest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.8,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tropical_forest_canyon": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.76,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tropical_forest_river": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.89,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tropical_grassland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.91,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tropical_island": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.88,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tropical_rainforest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.9,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tropical_volcano": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.98,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tsingy_forest": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.93,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:tundra": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.76,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:underground": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.54,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:volcanic_chamber": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.99,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:volcanic_crater": {
+      "archetype": "VOLCANIC",
+      "confidence": 1.0,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:volcano": {
+      "archetype": "VOLCANIC",
+      "confidence": 1.0,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:warm_birch_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.78,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:warm_stony_shore": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.84,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:waterlily_swamp": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.99,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:windswept_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.92,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:wistman_woods": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.67,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:wooded_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 1.0,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "wythers:wooded_savanna": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.95,
+      "sourceMod": "William Wythers' Overhauled Overworld"
+    },
+    "terralith:orchid_swamp": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.98,
+      "sourceMod": "Terralith"
+    },
+    "terralith:painted_mountains": {
+      "archetype": "DRY_HIGHLANDS",
+      "confidence": 0.94,
+      "sourceMod": "Terralith"
+    },
+    "terralith:red_oasis": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.99,
+      "sourceMod": "Terralith"
+    },
+    "terralith:rocky_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.97,
+      "sourceMod": "Terralith"
+    },
+    "terralith:rocky_mountains": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.86,
+      "sourceMod": "Terralith"
+    },
+    "terralith:rocky_shrubland": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.89,
+      "sourceMod": "Terralith"
+    },
+    "terralith:sakura_grove": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.9,
+      "sourceMod": "Terralith"
+    },
+    "terralith:sakura_valley": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.84,
+      "sourceMod": "Terralith"
+    },
+    "regions_unexplored:outback": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.98,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:pine_slopes": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.8,
+      "sourceMod": "Regions Unexplored"
+    },
+    "regions_unexplored:pine_taiga": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.93,
+      "sourceMod": "Regions Unexplored"
+    },
+    "biomesoplenty:auroral_garden": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.81,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:bayou": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.99,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:bog": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.99,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:cold_desert": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.92,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:coniferous_forest": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.64,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:crag": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.64,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:crystalline_chasm": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.7,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:dead_forest": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.69,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:dryland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.96,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:dune_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:end_corruption": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.25,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:end_flats": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.6,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:end_reef": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.38,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:end_wilds": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.3,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:erupting_inferno": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.98,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:field": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.88,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:fir_clearing": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.64,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:floodplain": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.9,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:forested_field": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.6,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:fungal_jungle": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:glowing_grotto": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.6,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:gravel_beach": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:highland": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.95,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:hot_springs": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.44,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:jade_cliffs": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.64,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:lavender_field": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.82,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:lush_desert": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.97,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:lush_savanna": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.7,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:maple_woods": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.9,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:marsh": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.7,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:mediterranean_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.83,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:moor": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.7,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:muskeg": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.7,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:mystic_grove": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.62,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:old_growth_dead_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.6,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:old_growth_woodland": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.64,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:ominous_woods": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.66,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:orchard": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.93,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:origin_valley": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.64,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:overgrown_greens": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.6,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:pasture": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.6,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:prairie": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.95,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:pumpkin_patch": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.6,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:rainforest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:redwood_forest": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.74,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:rocky_rainforest": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:rocky_shrubland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.66,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:scrubland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.66,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:seasonal_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.88,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:shrubland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.84,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:snowblossom_grove": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:snowy_coniferous_forest": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:snowy_fir_clearing": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:snowy_maple_woods": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:spider_nest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.6,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:subtropics": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:tropics": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.95,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:tundra": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.88,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:undergrowth": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.97,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:visceral_heap": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.93,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:volcanic_plains": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.7,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:volcano": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.7,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:wasteland": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.97,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:wasteland_steppe": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.66,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:wetland": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.97,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:wintry_origin_valley": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.68,
+      "sourceMod": "Biomes O Plenty (keyword-seeded)"
+    },
+    "biomesoplenty:withered_abyss": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.62,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:woodland": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.86,
+      "sourceMod": "Biomes O Plenty"
+    },
+    "biomesoplenty:alps": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.98,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:arctic": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.93,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:ashen_inferno": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.99,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:autumn_hills": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.95,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:badlands": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.97,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:birch_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.88,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:boneyard": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.74,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:burnt_forest": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.78,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:coral_reef": {
+      "archetype": "COASTAL_FLUVIAL",
+      "confidence": 0.98,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:corrupted_sands": {
+      "archetype": "VOLCANIC",
+      "confidence": 0.9,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:deciduous_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.96,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:deep_bayou": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.9,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:dense_forest": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.55,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:dry_boneyard": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.62,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:eucalyptus_forest": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.71,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:fen": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.95,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:flower_field": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.74,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:flower_meadow": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.86,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:fungal_field": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.42,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:fungi_forest_overworld": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.79,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:icy_hills": {
+      "archetype": "SNOWMELT_ALPINE",
+      "confidence": 0.57,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:land_of_lakes": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.94,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:land_of_lakes_marsh": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.98,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:lush_grassland": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.9,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:lush_swamp": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.98,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:mangrove": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.99,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:mountain": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.78,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:mountain_foothills": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.88,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:rainforest_old": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.86,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:redwood_forest_edge": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.86,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:sacred_springs": {
+      "archetype": "TROPICAL_MONSOON",
+      "confidence": 0.94,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:savanna": {
+      "archetype": "ARID_DROUGHT",
+      "confidence": 0.89,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:seasonal_forest_clearing": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.83,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:seasonal_orchard": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.77,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:sludgepit": {
+      "archetype": "RIPARIAN_WETLAND",
+      "confidence": 0.62,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:snowy_forest": {
+      "archetype": "COLD_HIGHLANDS",
+      "confidence": 0.9,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:spruce_woods": {
+      "archetype": "BOREAL_WET",
+      "confidence": 0.87,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:steppe": {
+      "archetype": "TUNDRA_STEPPE",
+      "confidence": 0.91,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:temperate_rainforest_hills": {
+      "archetype": "TEMPERATE_HIGHLANDS",
+      "confidence": 0.9,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:thicket": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.8,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    },
+    "biomesoplenty:timber": {
+      "archetype": "BALANCED_TEMPERATE",
+      "confidence": 0.79,
+      "sourceMod": "Biomes O Plenty (researched alias)"
+    }
+  }
+}

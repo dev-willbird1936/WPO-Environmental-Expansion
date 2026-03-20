@@ -13,6 +13,18 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
+// Define client source set before minecraft block so it exists for the runs config
+sourceSets {
+    client {
+        java {
+            srcDirs = ['src/client/java']
+        }
+        resources {
+            srcDirs = ['src/client/resources']
+        }
+    }
+}
+
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
     copyIdeResources = true
@@ -26,6 +38,7 @@ minecraft {
             mods {
                 wpo_environmental_expansion {
                     source sourceSets.main
+                    source sourceSets.client
                 }
                 wpo {
                     source project(':water_physics_overhaul_1.20.1').sourceSets.main
@@ -68,7 +81,7 @@ tasks.named('processResources', ProcessResources).configure {
         mod_version: version,
         mod_license: 'All Rights Reserved',
         mod_authors: project.findProperty('project_public_author'),
-        mod_description: 'Original WPO add-on focused on rainfall collection, outdoor runoff, evaporation, absorption, and environmental water handling.',
+        mod_description: 'Weather-driven runoff, puddles, evaporation, absorption, and collection systems for Water Physics Overhaul.',
         wpo_version_range: "[${project.findProperty('wpo_mod_version')},)"
     ]
     inputs.properties replaceProperties
@@ -85,7 +98,7 @@ tasks.named('jar', Jar).configure {
             'Specification-Version': '1',
             'Implementation-Title': project.name,
             'Implementation-Version': project.version,
-            'Implementation-Vendor': project.findProperty('project_public_vendor')
+            'Implementation-Vendor' : project.findProperty('project_public_vendor')
         ])
     }
     finalizedBy 'reobfJar'
