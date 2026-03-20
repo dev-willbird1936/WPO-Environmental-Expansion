@@ -48,7 +48,19 @@ The main world state persisted by the add-on includes drought score, ambient wet
 
 Environmental Expansion applies biome climate profiles on top of the global config values.
 
-- Each biome resolves into one of five archetypes: `arid drought`, `tropical monsoon`, `boreal wet`, `snowmelt alpine`, or `balanced temperate`.
+- Each biome resolves into one of these archetypes:
+  - `arid drought`
+  - `dry highlands`
+  - `volcanic`
+  - `cold highlands`
+  - `tropical monsoon`
+  - `riparian wetland`
+  - `boreal wet`
+  - `temperate highlands`
+  - `snowmelt alpine`
+  - `coastal fluvial`
+  - `tundra steppe`
+  - `balanced temperate`
 - On server or overworld load, missing biome entries are generated from registered biome information such as biome id naming and climate-related values.
 - Generated and refined results are stored in:
 
@@ -56,7 +68,10 @@ Environmental Expansion applies biome climate profiles on top of the global conf
 config/wpo_environmental_expansion/biome-profiles.json
 ```
 
-- During play, loaded terrain can refine a biome profile using real observed surface blocks.
+- The mod ships curated biome compatibility presets for major biome packs including `Terralith`, `Biomes O' Plenty`, `Oh The Biomes We've Gone`, `Regions Unexplored`, and `William Wythers' Overhauled Overworld`.
+- Curated preset biomes are treated as locked compatibility profiles. They do not collect live scout samples or drift away from their shipped archetype.
+- Unknown modded biomes still fall back to generated climate signals, terrain sampling, and biome-name keyword scoring.
+- During play, uncovered modded biomes can refine their profile using real observed surface blocks.
 - Refinement is capped. After a biome reaches its observation limit, it stops collecting additional live samples and uses the stored profile it already has.
 
 Base generation uses climate and biome-name hints. Live refinement uses block signals like:
@@ -97,6 +112,22 @@ The in-game config screen exposes the main systems and tuning values for:
 - drought behavior
 - season length and seasonal multipliers
 - collector/storage values
+
+It also includes a `Clear Modded Biome Samples` action so any non-curated modded biome observations can be wiped before running a fresh scout pass.
+
+## Biome Scout
+
+The add-on includes a server-side biome scout command set:
+
+- `/wpo scoutbiomes [delaySeconds] [startIndex]`
+- `/wpo scoutstatus`
+- `/wpo scoutstop`
+
+The scout uses `findClosestBiome3d`, teleports to a sky-visible surface spot, samples the biome, then advances after the configured delay.
+
+- locate startup delay is `12s`
+- default sampling window is `10s`
+- biomes that already have locked compatibility coverage or in-person sample coverage are skipped automatically
 
 ## Notes
 
