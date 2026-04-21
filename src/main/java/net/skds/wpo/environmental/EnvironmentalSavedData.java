@@ -1,11 +1,11 @@
 package net.skds.wpo.environmental;
 
-import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.longs.Long2IntMap;
 import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -21,6 +21,8 @@ public class EnvironmentalSavedData extends SavedData {
     private static final String ABSORBED = "absorbed";
     private static final String DROUGHT = "drought";
     private static final String AMBIENT_WETNESS = "ambient_wetness";
+    private static final SavedData.Factory<EnvironmentalSavedData> FACTORY =
+        new SavedData.Factory<>(EnvironmentalSavedData::new, EnvironmentalSavedData::load, null);
 
     private final Long2IntOpenHashMap absorbedWater = new Long2IntOpenHashMap();
     private final transient Object2LongOpenHashMap<UUID> playerChunks = new Object2LongOpenHashMap<>();
@@ -36,10 +38,10 @@ public class EnvironmentalSavedData extends SavedData {
     }
 
     public static EnvironmentalSavedData get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(EnvironmentalSavedData::load, EnvironmentalSavedData::new, DATA_NAME);
+        return level.getDataStorage().computeIfAbsent(FACTORY, DATA_NAME);
     }
 
-    public static EnvironmentalSavedData load(CompoundTag tag) {
+    public static EnvironmentalSavedData load(CompoundTag tag, HolderLookup.Provider registries) {
         EnvironmentalSavedData data = new EnvironmentalSavedData();
         data.droughtScore = tag.getInt(DROUGHT);
         data.ambientWetness = tag.getInt(AMBIENT_WETNESS);
@@ -62,7 +64,7 @@ public class EnvironmentalSavedData extends SavedData {
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
+    public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
         tag.putInt(DROUGHT, droughtScore);
         tag.putInt(AMBIENT_WETNESS, ambientWetness);
         ListTag list = new ListTag();
@@ -106,8 +108,24 @@ public class EnvironmentalSavedData extends SavedData {
         }
     }
 
+    public void setDroughtScore(int value) {
+        int next = Math.max(0, value);
+        if (next != droughtScore) {
+            droughtScore = next;
+            setDirty();
+        }
+    }
+
     public void adjustAmbientWetness(int delta, int cap) {
         int next = Math.max(0, Math.min(Math.max(0, cap), ambientWetness + delta));
+        if (next != ambientWetness) {
+            ambientWetness = next;
+            setDirty();
+        }
+    }
+
+    public void setAmbientWetness(int value, int cap) {
+        int next = Math.max(0, Math.min(Math.max(0, cap), value));
         if (next != ambientWetness) {
             ambientWetness = next;
             setDirty();
@@ -158,6 +176,20 @@ public class EnvironmentalSavedData extends SavedData {
 
     public void clearAbsorbed(BlockPos pos) {
         if (absorbedWater.remove(pos.asLong()) != 0) {
+            setDirty();
+        }
+    }
+
+    public void setAbsorbed(BlockPos pos, int amount) {
+        long key = pos.asLong();
+        int next = Math.max(0, amount);
+        if (next <= 0) {
+            if (absorbedWater.remove(key) != 0) {
+                setDirty();
+            }
+            return;
+        }
+        if (absorbedWater.put(key, next) != next) {
             setDirty();
         }
     }

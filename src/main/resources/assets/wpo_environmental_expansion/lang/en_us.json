@@ -4,5 +4,10 @@
   "block.wpo_environmental_expansion.cistern": "Cistern",
   "block.wpo_environmental_expansion.roof_collector": "Roof Collector",
   "block.wpo_environmental_expansion.ground_basin": "Ground Basin",
-  "block.wpo_environmental_expansion.intake_grate_collector": "Intake Grate Collector"
+  "block.wpo_environmental_expansion.intake_grate_collector": "Intake Grate Collector",
+  "block.wpo_environmental_expansion.surface_ice": "Surface Ice",
+  "key.wpo_environmental_expansion.open_environmental_debug": "Open Environmental Debug",
+  "key.categories.wpo_environmental_expansion": "WPO: Environmental Expansion",
+  "screen.wpo_environmental_expansion.environmental_debug.title": "WPO Environmental",
+  "screen.wpo_environmental_expansion.environmental_debug.subtitle": "Live climate estimates and local conditions"
 }

@@ -125,6 +125,10 @@ public final class BiomeProfileManager {
 
     public static synchronized BiomeEnvironmentProfile getProfile(ServerLevel level, BlockPos pos) {
         ensureInitialized(level);
+        BiomeEnvironmentProfile benchmarkOverride = EnvironmentalBenchmarkManager.getForcedProfile(level, pos);
+        if (benchmarkOverride != null) {
+            return benchmarkOverride;
+        }
         ResourceLocation biomeId = getBiomeId(level, pos);
         StoredProfile profile = PROFILES.get(biomeId);
         if (profile == null) {
@@ -146,6 +150,9 @@ public final class BiomeProfileManager {
 
     public static synchronized void observe(ServerLevel level, BlockPos groundPos, BlockState groundState) {
         ensureInitialized(level);
+        if (EnvironmentalBenchmarkManager.hasOverride(level, groundPos)) {
+            return;
+        }
         ResourceLocation biomeId = getBiomeId(level, groundPos);
         StoredProfile profile = PROFILES.get(biomeId);
         if (profile == null || profile.isSamplingLocked() || profile.observedSamples >= MAX_OBSERVED_SAMPLES) {
@@ -243,7 +250,7 @@ public final class BiomeProfileManager {
     }
 
     private static ResourceLocation getBiomeId(ServerLevel level, BlockPos pos) {
-        return level.getBiome(pos).unwrapKey().map(ResourceKey::location).orElse(new ResourceLocation("minecraft", "unknown"));
+        return level.getBiome(pos).unwrapKey().map(ResourceKey::location).orElse(ResourceLocation.fromNamespaceAndPath("minecraft", "unknown"));
     }
 
     private static BlockPos resolveColumnGround(ServerLevel level, int x, int z) {

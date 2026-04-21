@@ -4,18 +4,17 @@ import java.nio.file.Paths;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
-
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public final class EnvironmentalConfig {
 
     public static final Common COMMON;
-    private static final ForgeConfigSpec SPEC;
+    private static final ModConfigSpec SPEC;
 
     static {
-        Pair<Common, ForgeConfigSpec> common = new ForgeConfigSpec.Builder().configure(Common::new);
+        Pair<Common, ModConfigSpec> common = new ModConfigSpec.Builder().configure(Common::new);
         COMMON = common.getLeft();
         SPEC = common.getRight();
     }
@@ -23,9 +22,9 @@ public final class EnvironmentalConfig {
     private EnvironmentalConfig() {
     }
 
-    public static void init() {
+    public static void init(ModContainer container) {
         Paths.get(System.getProperty("user.dir"), "config", EnvironmentalExpansion.MOD_ID).toFile().mkdirs();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SPEC, Paths.get(EnvironmentalExpansion.MOD_ID, "common.toml").toString());
+        container.registerConfig(ModConfig.Type.COMMON, SPEC, Paths.get(EnvironmentalExpansion.MOD_ID, "common.toml").toString());
     }
 
     public static void save() {
@@ -33,61 +32,70 @@ public final class EnvironmentalConfig {
     }
 
     public static final class Common {
-        public final ForgeConfigSpec.BooleanValue rainAccumulation;
-        public final ForgeConfigSpec.BooleanValue puddles;
-        public final ForgeConfigSpec.BooleanValue distantRainCatchup;
-        public final ForgeConfigSpec.BooleanValue evaporation;
-        public final ForgeConfigSpec.BooleanValue droughts;
-        public final ForgeConfigSpec.BooleanValue floods;
-        public final ForgeConfigSpec.BooleanValue snowmelt;
-        public final ForgeConfigSpec.BooleanValue absorption;
-        public final ForgeConfigSpec.BooleanValue seasons;
+        public final ModConfigSpec.BooleanValue rainAccumulation;
+        public final ModConfigSpec.BooleanValue puddles;
+        public final ModConfigSpec.BooleanValue distantRainCatchup;
+        public final ModConfigSpec.BooleanValue evaporation;
+        public final ModConfigSpec.BooleanValue droughts;
+        public final ModConfigSpec.BooleanValue floods;
+        public final ModConfigSpec.BooleanValue snowmelt;
+        public final ModConfigSpec.BooleanValue absorption;
+        public final ModConfigSpec.BooleanValue condensation;
+        public final ModConfigSpec.BooleanValue surfaceIce;
+        public final ModConfigSpec.BooleanValue agriculture;
+        public final ModConfigSpec.BooleanValue seasons;
 
-        public final ForgeConfigSpec.IntValue updateInterval;
-        public final ForgeConfigSpec.IntValue sampleRadius;
-        public final ForgeConfigSpec.IntValue columnChecksPerPlayer;
-        public final ForgeConfigSpec.IntValue arrivalColumnChecks;
+        public final ModConfigSpec.IntValue updateInterval;
+        public final ModConfigSpec.IntValue sampleRadius;
+        public final ModConfigSpec.IntValue columnChecksPerPlayer;
+        public final ModConfigSpec.IntValue arrivalColumnChecks;
 
-        public final ForgeConfigSpec.DoubleValue rainChance;
-        public final ForgeConfigSpec.DoubleValue rainIntensity;
-        public final ForgeConfigSpec.DoubleValue stormIntensity;
-        public final ForgeConfigSpec.DoubleValue collectorEfficiency;
-        public final ForgeConfigSpec.DoubleValue evaporationChance;
-        public final ForgeConfigSpec.DoubleValue droughtEvaporationBonus;
-        public final ForgeConfigSpec.DoubleValue sunlightEvaporationBonus;
-        public final ForgeConfigSpec.DoubleValue hotBiomeEvaporationBonus;
-        public final ForgeConfigSpec.DoubleValue lavaEvaporationBonus;
-        public final ForgeConfigSpec.DoubleValue absorptionChance;
-        public final ForgeConfigSpec.DoubleValue absorptionMultiplierOverride;
-        public final ForgeConfigSpec.DoubleValue releaseChance;
-        public final ForgeConfigSpec.DoubleValue snowmeltChance;
-        public final ForgeConfigSpec.DoubleValue springRunoffMultiplier;
-        public final ForgeConfigSpec.DoubleValue summerEvaporationMultiplier;
-        public final ForgeConfigSpec.DoubleValue evaporationMultiplierOverride;
+        public final ModConfigSpec.DoubleValue rainChance;
+        public final ModConfigSpec.DoubleValue rainIntensity;
+        public final ModConfigSpec.DoubleValue stormIntensity;
+        public final ModConfigSpec.DoubleValue collectorEfficiency;
+        public final ModConfigSpec.DoubleValue condensationChance;
+        public final ModConfigSpec.DoubleValue condensationMultiplierOverride;
+        public final ModConfigSpec.DoubleValue surfaceFreezeChance;
+        public final ModConfigSpec.DoubleValue surfaceIceMultiplierOverride;
+        public final ModConfigSpec.DoubleValue evaporationChance;
+        public final ModConfigSpec.DoubleValue droughtEvaporationBonus;
+        public final ModConfigSpec.DoubleValue sunlightEvaporationBonus;
+        public final ModConfigSpec.DoubleValue hotBiomeEvaporationBonus;
+        public final ModConfigSpec.DoubleValue lavaEvaporationBonus;
+        public final ModConfigSpec.DoubleValue absorptionChance;
+        public final ModConfigSpec.DoubleValue absorptionMultiplierOverride;
+        public final ModConfigSpec.DoubleValue releaseChance;
+        public final ModConfigSpec.DoubleValue snowmeltChance;
+        public final ModConfigSpec.DoubleValue agricultureGrowthBoostChance;
+        public final ModConfigSpec.DoubleValue agricultureMultiplierOverride;
+        public final ModConfigSpec.DoubleValue springRunoffMultiplier;
+        public final ModConfigSpec.DoubleValue summerEvaporationMultiplier;
+        public final ModConfigSpec.DoubleValue evaporationMultiplierOverride;
 
-        public final ForgeConfigSpec.IntValue droughtThreshold;
-        public final ForgeConfigSpec.IntValue droughtDryStep;
-        public final ForgeConfigSpec.IntValue droughtWetStep;
-        public final ForgeConfigSpec.IntValue seasonLengthDays;
-        public final ForgeConfigSpec.IntValue seasonPhaseLengthDays;
-        public final ForgeConfigSpec.BooleanValue tropicalSeasons;
-        public final ForgeConfigSpec.IntValue ambientWetnessCap;
-        public final ForgeConfigSpec.IntValue ambientWetnessRainGain;
-        public final ForgeConfigSpec.IntValue ambientWetnessDryDecay;
-        public final ForgeConfigSpec.IntValue ambientMaxPuddleLevels;
+        public final ModConfigSpec.IntValue droughtThreshold;
+        public final ModConfigSpec.IntValue droughtDryStep;
+        public final ModConfigSpec.IntValue droughtWetStep;
+        public final ModConfigSpec.IntValue seasonLengthDays;
+        public final ModConfigSpec.IntValue seasonPhaseLengthDays;
+        public final ModConfigSpec.BooleanValue tropicalSeasons;
+        public final ModConfigSpec.IntValue ambientWetnessCap;
+        public final ModConfigSpec.IntValue ambientWetnessRainGain;
+        public final ModConfigSpec.IntValue ambientWetnessDryDecay;
+        public final ModConfigSpec.IntValue ambientMaxPuddleLevels;
 
-        public final ForgeConfigSpec.IntValue rainBarrelBuckets;
-        public final ForgeConfigSpec.IntValue cisternBuckets;
-        public final ForgeConfigSpec.IntValue roofCollectorBuckets;
-        public final ForgeConfigSpec.IntValue groundBasinBuckets;
-        public final ForgeConfigSpec.IntValue intakeCollectorBuckets;
-        public final ForgeConfigSpec.IntValue roofCollectorTransferMb;
-        public final ForgeConfigSpec.IntValue basinSurfaceDrainLevels;
-        public final ForgeConfigSpec.IntValue grateSurfaceDrainLevels;
-        public final ForgeConfigSpec.IntValue absorptionEvictionDays;
+        public final ModConfigSpec.IntValue rainBarrelBuckets;
+        public final ModConfigSpec.IntValue cisternBuckets;
+        public final ModConfigSpec.IntValue roofCollectorBuckets;
+        public final ModConfigSpec.IntValue groundBasinBuckets;
+        public final ModConfigSpec.IntValue intakeCollectorBuckets;
+        public final ModConfigSpec.IntValue roofCollectorTransferMb;
+        public final ModConfigSpec.IntValue basinSurfaceDrainLevels;
+        public final ModConfigSpec.IntValue grateSurfaceDrainLevels;
+        public final ModConfigSpec.IntValue absorptionEvictionDays;
 
-        private Common(ForgeConfigSpec.Builder builder) {
-            Function<String, ForgeConfigSpec.Builder> translate = key -> builder.translation(EnvironmentalExpansion.MOD_ID + ".config." + key);
+        private Common(ModConfigSpec.Builder builder) {
+            Function<String, ModConfigSpec.Builder> translate = key -> builder.translation(EnvironmentalExpansion.MOD_ID + ".config." + key);
 
             builder.push("Systems");
             rainAccumulation = translate.apply("rainAccumulation").define("rainAccumulation", true);
@@ -98,6 +106,9 @@ public final class EnvironmentalConfig {
             floods = translate.apply("floods").define("floods", true);
             snowmelt = translate.apply("snowmelt").define("snowmelt", true);
             absorption = translate.apply("absorption").define("absorption", true);
+            condensation = translate.apply("condensation").define("condensation", true);
+            surfaceIce = translate.apply("surfaceIce").define("surfaceIce", true);
+            agriculture = translate.apply("agriculture").define("agriculture", true);
             seasons = translate.apply("seasons").define("seasons", true);
             builder.pop();
 
@@ -129,6 +140,18 @@ public final class EnvironmentalConfig {
             collectorEfficiency = translate.apply("collectorEfficiency")
                 .comment("Multiplier applied to collector fill rates.")
                 .defineInRange("collectorEfficiency", 1.0D, 0.0D, 8.0D);
+            condensationChance = translate.apply("condensationChance")
+                .comment("Base chance that a sampled dry outdoor column forms a dew step.")
+                .defineInRange("condensationChance", 0.012D, 0.0D, 4.0D);
+            condensationMultiplierOverride = translate.apply("condensationMultiplierOverride")
+                .comment("Global multiplier for condensation and dew formation. Use /condensation to change in-game.")
+                .defineInRange("condensationMultiplierOverride", 1.0D, 0.0D, Double.MAX_VALUE);
+            surfaceFreezeChance = translate.apply("surfaceFreezeChance")
+                .comment("Base chance that a sampled exposed surface-water step freezes into surface ice.")
+                .defineInRange("surfaceFreezeChance", 0.08D, 0.0D, 4.0D);
+            surfaceIceMultiplierOverride = translate.apply("surfaceIceMultiplierOverride")
+                .comment("Global multiplier for surface freezing and thaw. Use /freezing to change in-game.")
+                .defineInRange("surfaceIceMultiplierOverride", 1.0D, 0.0D, Double.MAX_VALUE);
             droughtThreshold = translate.apply("droughtThreshold")
                 .comment("Dryness score at which drought behavior starts to apply.")
                 .defineInRange("droughtThreshold", 24000, 0, 2_000_000);
@@ -184,8 +207,8 @@ public final class EnvironmentalConfig {
                 .comment("Additional evaporation multiplier for hot biomes.")
                 .defineInRange("hotBiomeEvaporationBonus", 0.5D, 0.0D, 8.0D);
             lavaEvaporationBonus = translate.apply("lavaEvaporationBonus")
-                .comment("Additional evaporation multiplier when lava is nearby.")
-                .defineInRange("lavaEvaporationBonus", 0.7D, 0.0D, 8.0D);
+                .comment("Additional evaporation multiplier when lava or magma is nearby.")
+                .defineInRange("lavaEvaporationBonus", 1.0D, 0.0D, 8.0D);
             absorptionChance = translate.apply("absorptionChance")
                 .comment("Base chance that absorbent terrain stores one water step from rainfall or a surface puddle.")
                 .defineInRange("absorptionChance", 0.35D, 0.0D, 4.0D);
@@ -198,6 +221,12 @@ public final class EnvironmentalConfig {
             snowmeltChance = translate.apply("snowmeltChance")
                 .comment("Base chance that a sampled snow column melts one layer.")
                 .defineInRange("snowmeltChance", 0.12D, 0.0D, 4.0D);
+            agricultureGrowthBoostChance = translate.apply("agricultureGrowthBoostChance")
+                .comment("Base chance that absorbed water in farmland forces an extra crop growth step.")
+                .defineInRange("agricultureGrowthBoostChance", 0.10D, 0.0D, 4.0D);
+            agricultureMultiplierOverride = translate.apply("agricultureMultiplierOverride")
+                .comment("Global multiplier for absorbed-water farmland support. Use /agriculture to change in-game.")
+                .defineInRange("agricultureMultiplierOverride", 1.0D, 0.0D, Double.MAX_VALUE);
             builder.pop();
 
             builder.push("Storage");

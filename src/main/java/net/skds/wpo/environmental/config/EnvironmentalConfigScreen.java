@@ -69,6 +69,9 @@ public class EnvironmentalConfigScreen extends Screen {
         addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Floods", EnvironmentalConfig.COMMON.floods.get(), EnvironmentalConfig.COMMON.floods.getDefault(), EnvironmentalConfig.COMMON.floods::set);
         addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Snowmelt", EnvironmentalConfig.COMMON.snowmelt.get(), EnvironmentalConfig.COMMON.snowmelt.getDefault(), EnvironmentalConfig.COMMON.snowmelt::set);
         addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Absorption", EnvironmentalConfig.COMMON.absorption.get(), EnvironmentalConfig.COMMON.absorption.getDefault(), EnvironmentalConfig.COMMON.absorption::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Condensation", EnvironmentalConfig.COMMON.condensation.get(), EnvironmentalConfig.COMMON.condensation.getDefault(), EnvironmentalConfig.COMMON.condensation::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Surface Ice", EnvironmentalConfig.COMMON.surfaceIce.get(), EnvironmentalConfig.COMMON.surfaceIce.getDefault(), EnvironmentalConfig.COMMON.surfaceIce::set);
+        addToggle(top + row++ * ROW_HEIGHT, Page.SYSTEMS, "Agriculture Support", EnvironmentalConfig.COMMON.agriculture.get(), EnvironmentalConfig.COMMON.agriculture.getDefault(), EnvironmentalConfig.COMMON.agriculture::set);
         addToggle(top + row * ROW_HEIGHT, Page.SYSTEMS, "Seasons", EnvironmentalConfig.COMMON.seasons.get(), EnvironmentalConfig.COMMON.seasons.getDefault(), EnvironmentalConfig.COMMON.seasons::set);
 
         row = 0;
@@ -80,8 +83,11 @@ public class EnvironmentalConfigScreen extends Screen {
         addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Rain Intensity", EnvironmentalConfig.COMMON.rainIntensity.get(), EnvironmentalConfig.COMMON.rainIntensity.getDefault(), 0.0D, 8.0D, EnvironmentalConfig.COMMON.rainIntensity::set);
         addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Storm Intensity", EnvironmentalConfig.COMMON.stormIntensity.get(), EnvironmentalConfig.COMMON.stormIntensity.getDefault(), 1.0D, 12.0D, EnvironmentalConfig.COMMON.stormIntensity::set);
         addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Collector Efficiency", EnvironmentalConfig.COMMON.collectorEfficiency.get(), EnvironmentalConfig.COMMON.collectorEfficiency.getDefault(), 0.0D, 8.0D, EnvironmentalConfig.COMMON.collectorEfficiency::set);
+        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Condensation Chance", EnvironmentalConfig.COMMON.condensationChance.get(), EnvironmentalConfig.COMMON.condensationChance.getDefault(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.condensationChance::set);
+        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Surface Freeze Chance", EnvironmentalConfig.COMMON.surfaceFreezeChance.get(), EnvironmentalConfig.COMMON.surfaceFreezeChance.getDefault(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.surfaceFreezeChance::set);
         addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Evaporation Chance", EnvironmentalConfig.COMMON.evaporationChance.get(), EnvironmentalConfig.COMMON.evaporationChance.getDefault(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.evaporationChance::set);
         addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Absorption Chance", EnvironmentalConfig.COMMON.absorptionChance.get(), EnvironmentalConfig.COMMON.absorptionChance.getDefault(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.absorptionChance::set);
+        addDoubleField(top + row++ * ROW_HEIGHT, Page.TUNING, "Growth Boost Chance", EnvironmentalConfig.COMMON.agricultureGrowthBoostChance.get(), EnvironmentalConfig.COMMON.agricultureGrowthBoostChance.getDefault(), 0.0D, 4.0D, EnvironmentalConfig.COMMON.agricultureGrowthBoostChance::set);
         addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Ambient Wetness Cap", EnvironmentalConfig.COMMON.ambientWetnessCap.get(), EnvironmentalConfig.COMMON.ambientWetnessCap.getDefault(), 0, 200_000, EnvironmentalConfig.COMMON.ambientWetnessCap::set);
         addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Ambient Rain Gain", EnvironmentalConfig.COMMON.ambientWetnessRainGain.get(), EnvironmentalConfig.COMMON.ambientWetnessRainGain.getDefault(), 0, 1000, EnvironmentalConfig.COMMON.ambientWetnessRainGain::set);
         addIntField(top + row++ * ROW_HEIGHT, Page.TUNING, "Ambient Dry Decay", EnvironmentalConfig.COMMON.ambientWetnessDryDecay.get(), EnvironmentalConfig.COMMON.ambientWetnessDryDecay.getDefault(), 0, 1000, EnvironmentalConfig.COMMON.ambientWetnessDryDecay::set);
@@ -202,19 +208,19 @@ public class EnvironmentalConfigScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
         int maxScroll = getMaxScroll(page);
         if (maxScroll <= 0) {
-            return super.mouseScrolled(mouseX, mouseY, delta);
+            return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
         }
         int step = ROW_HEIGHT;
-        int next = Mth.clamp(getScroll(page) - (int) Math.signum(delta) * step, 0, maxScroll);
+        int next = Mth.clamp(getScroll(page) - (int) Math.signum(deltaY) * step, 0, maxScroll);
         if (next != getScroll(page)) {
             setScroll(page, next);
             updatePageState();
             return true;
         }
-        return super.mouseScrolled(mouseX, mouseY, delta);
+        return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
     }
 
     private void saveAndClose() {
@@ -260,7 +266,7 @@ public class EnvironmentalConfigScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.renderBackground(guiGraphics);
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         int centerX = this.width / 2;

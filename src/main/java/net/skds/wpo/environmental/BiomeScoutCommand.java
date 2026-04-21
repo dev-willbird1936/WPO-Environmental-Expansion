@@ -21,9 +21,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraftforge.event.TickEvent.LevelTickEvent;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -190,9 +189,8 @@ public class BiomeScoutCommand {
     }
 
     @SubscribeEvent
-    public static void onServerTick(LevelTickEvent event) {
-        if (event.phase != Phase.END) return;
-        if (!(event.level instanceof ServerLevel) || event.level.isClientSide()) return;
+    public static void onServerTick(LevelTickEvent.Post event) {
+        if (!(event.getLevel() instanceof ServerLevel serverLevel) || serverLevel.isClientSide()) return;
         if (!scouting || scoutPlayer == null) return;
 
         if (scoutPlayer.isRemoved() || scoutPlayer.getServer() != scoutServer) {

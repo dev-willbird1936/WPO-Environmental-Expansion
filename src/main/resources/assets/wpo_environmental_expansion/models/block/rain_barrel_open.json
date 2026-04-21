@@ -3,6 +3,6 @@
   "textures": {
     "side": "minecraft:block/barrel_side",
     "bottom": "minecraft:block/oak_planks",
-    "top": "minecraft:block/barrel_open"
+    "top": "minecraft:block/barrel_top_open"
   }
 }

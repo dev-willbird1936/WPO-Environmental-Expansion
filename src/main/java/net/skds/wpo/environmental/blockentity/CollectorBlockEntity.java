@@ -1,11 +1,11 @@
 package net.skds.wpo.environmental.blockentity;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -14,13 +14,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.skds.wpo.api.WPOFluidAccess;
 import net.skds.wpo.environmental.EnvironmentalContent;
 import net.skds.wpo.environmental.EnvironmentalTicker;
@@ -35,7 +33,6 @@ public class CollectorBlockEntity extends BlockEntity {
             sync();
         }
     };
-    private final LazyOptional<IFluidHandler> fluidCapability = LazyOptional.of(() -> tank);
 
     public CollectorBlockEntity(BlockPos pos, BlockState state) {
         super(EnvironmentalContent.COLLECTOR_BLOCK_ENTITY.get(), pos, state);
@@ -106,15 +103,10 @@ public class CollectorBlockEntity extends BlockEntity {
     }
 
     private void pushDownward(ServerLevel level, BlockPos belowPos, int amountMb) {
-        BlockEntity below = level.getBlockEntity(belowPos);
-        if (below == null) {
-            return;
+        IFluidHandler target = level.getCapability(Capabilities.FluidHandler.BLOCK, belowPos, Direction.UP);
+        if (target != null && !tank.isEmpty()) {
+            FluidUtil.tryFluidTransfer(target, tank, amountMb, true);
         }
-        below.getCapability(ForgeCapabilities.FLUID_HANDLER, Direction.UP).ifPresent(target -> {
-            if (!tank.isEmpty()) {
-                FluidUtil.tryFluidTransfer(target, tank, amountMb, true);
-            }
-        });
     }
 
     public int getComparatorOutput() {
@@ -140,25 +132,24 @@ public class CollectorBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("tank", tank.writeToNBT(new CompoundTag()));
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.put("tank", tank.writeToNBT(registries, new CompoundTag()));
     }
 
     @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        if (tag.contains("tank", CompoundTag.TAG_COMPOUND)) {
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        tank.setCapacity(getConfiguredCapacity());
+        if (tag.contains("tank", Tag.TAG_COMPOUND)) {
             tank.setCapacity(getConfiguredCapacity());
-            tank.readFromNBT(tag.getCompound("tank"));
+            tank.readFromNBT(registries, tag.getCompound("tank"));
         }
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
-        return tag;
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
     }
 
     @Nullable
@@ -168,28 +159,13 @@ public class CollectorBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        load(tag);
-    }
-
-    @Override
-    public void setRemoved() {
-        super.setRemoved();
-        fluidCapability.invalidate();
-    }
-
-    @Override
     public void onLoad() {
         super.onLoad();
         tank.setCapacity(getConfiguredCapacity());
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction side) {
-        if (capability == ForgeCapabilities.FLUID_HANDLER) {
-            return fluidCapability.cast();
-        }
-        return super.getCapability(capability, side);
+    @Nullable
+    public IFluidHandler getFluidHandler(@Nullable Direction side) {
+        return tank;
     }
 }

@@ -1,24 +1,40 @@
 package net.skds.wpo.environmental.network;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.EventBusSubscriber;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 
 /**
  * Client-side event subscriber for the WPO Environmental debug overlay.
- * Renders the overlay when F3 is open.
- * Auto-registers via @EventBusSubscriber on the client side only.
+ * Renders the overlay when F3 is open and handles the F6 debug menu toggle.
  */
-@EventBusSubscriber(modid = net.skds.wpo.environmental.EnvironmentalExpansion.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class EnvClientEvents {
 
     @SubscribeEvent
-    public static void onRenderOverlay(RenderGameOverlayEvent.Pre event) {
-        if (event.getType() != RenderGameOverlayEvent.ElementType.ALL) return;
-        if (!Minecraft.getInstance().showDebugInfo()) return;
-        EnvDebugOverlay.render(event.getMatrixStack());
+    public static void onRenderOverlay(RenderGuiLayerEvent.Pre event) {
+        if (!event.getName().equals(VanillaGuiLayers.DEBUG_OVERLAY)) {
+            return;
+        }
+
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.screen instanceof EnvDebugScreen) {
+            return;
+        }
+
+        EnvDebugOverlay.render(event.getGuiGraphics());
+    }
+
+    @SubscribeEvent
+    public static void onClientTick(ClientTickEvent.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || mc.level == null) {
+            return;
+        }
+
+        if (EnvClientKeyMappings.OPEN_ENV_DEBUG.consumeClick()) {
+            EnvDebugScreen.toggle();
+        }
     }
 }

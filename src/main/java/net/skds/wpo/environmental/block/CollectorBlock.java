@@ -1,12 +1,13 @@
 package net.skds.wpo.environmental.block;
 
+import com.mojang.serialization.MapCodec;
 import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.BlockGetter;
@@ -28,7 +29,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.FluidUtil;
 import net.skds.wpo.environmental.EnvironmentalConfig;
 import net.skds.wpo.environmental.EnvironmentalContent;
 import net.skds.wpo.environmental.blockentity.CollectorBlockEntity;
@@ -53,11 +54,18 @@ public class CollectorBlock extends BaseEntityBlock {
     );
 
     private final CollectorProfile profile;
+    private final MapCodec<CollectorBlock> codec;
 
     public CollectorBlock(CollectorProfile profile, Properties properties) {
         super(properties);
         this.profile = profile;
+        this.codec = simpleCodec(blockProperties -> new CollectorBlock(profile, blockProperties));
         registerDefaultState(stateDefinition.any().setValue(BlockStateProperties.OPEN, false));
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return codec;
     }
 
     public CollectorProfile getProfile() {
@@ -94,19 +102,27 @@ public class CollectorBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, net.minecraft.world.InteractionHand hand, BlockHitResult hit) {
         if (FluidUtil.interactWithFluidHandler(player, hand, level, pos, hit.getDirection())) {
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-        if (profile == CollectorProfile.RAIN_BARREL) {
-            if (!level.isClientSide) {
-                boolean open = !state.getValue(BlockStateProperties.OPEN);
-                level.setBlock(pos, state.setValue(BlockStateProperties.OPEN, open), 3);
-                level.playSound(null, pos, open ? SoundEvents.BARREL_OPEN : SoundEvents.BARREL_CLOSE, SoundSource.BLOCKS, 0.5F, open ? 1.0F : 0.9F);
-            }
-            return InteractionResult.sidedSuccess(level.isClientSide);
+        if (FluidUtil.getFluidHandler(stack).isPresent()) {
+            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
         }
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        if (profile != CollectorProfile.RAIN_BARREL) {
+            return InteractionResult.PASS;
+        }
+        if (!level.isClientSide) {
+            boolean open = !state.getValue(BlockStateProperties.OPEN);
+            level.setBlock(pos, state.setValue(BlockStateProperties.OPEN, open), 3);
+            level.playSound(null, pos, open ? SoundEvents.BARREL_OPEN : SoundEvents.BARREL_CLOSE, SoundSource.BLOCKS, 0.5F, open ? 1.0F : 0.9F);
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
@@ -196,11 +212,11 @@ public class CollectorBlock extends BaseEntityBlock {
 
         public BlockBehaviour.Properties createProperties() {
             return switch (this) {
-                case RAIN_BARREL -> BlockBehaviour.Properties.copy(Blocks.BARREL).strength(2.0F, 3.0F);
-                case CISTERN -> BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS).sound(SoundType.STONE).strength(3.5F, 6.0F);
-                case ROOF_COLLECTOR -> BlockBehaviour.Properties.copy(Blocks.COPPER_BLOCK).sound(SoundType.COPPER).mapColor(MapColor.COLOR_ORANGE).strength(3.0F, 5.0F);
-                case GROUND_BASIN -> BlockBehaviour.Properties.copy(Blocks.MUD_BRICKS).strength(2.5F, 4.0F);
-                case INTAKE_GRATE_COLLECTOR -> BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.METAL).strength(4.0F, 6.0F);
+                case RAIN_BARREL -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL).strength(2.0F, 3.0F);
+                case CISTERN -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).sound(SoundType.STONE).strength(3.5F, 6.0F);
+                case ROOF_COLLECTOR -> BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK).sound(SoundType.COPPER).mapColor(MapColor.COLOR_ORANGE).strength(3.0F, 5.0F);
+                case GROUND_BASIN -> BlockBehaviour.Properties.ofFullCopy(Blocks.MUD_BRICKS).strength(2.5F, 4.0F);
+                case INTAKE_GRATE_COLLECTOR -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).sound(SoundType.METAL).strength(4.0F, 6.0F);
             };
         }
     }

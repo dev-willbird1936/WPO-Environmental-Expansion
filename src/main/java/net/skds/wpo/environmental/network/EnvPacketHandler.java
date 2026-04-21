@@ -1,37 +1,29 @@
 package net.skds.wpo.environmental.network;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
-import net.skds.wpo.environmental.EnvironmentalExpansion;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-import java.util.Optional;
-
-public class EnvPacketHandler {
+public final class EnvPacketHandler {
 
     private static final String PROTOCOL_VERSION = "1";
-    private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
-            new ResourceLocation(EnvironmentalExpansion.MOD_ID, "network"),
-            () -> PROTOCOL_VERSION,
-            v -> true,
-            v -> true
-    );
 
-    private static int id = 0;
-
-    public static SimpleChannel channel() {
-        return CHANNEL;
+    private EnvPacketHandler() {
     }
 
-    public static void init() {
-        CHANNEL.registerMessage(
-                id++,
-                EnvDebugPacket.class,
-                EnvDebugPacket::encode,
-                EnvDebugPacket::decode,
-                EnvDebugPacket::handle,
-                Optional.of(NetworkDirection.PLAY_TO_CLIENT)
-        );
+    public static void init(IEventBus modBus) {
+        modBus.addListener(EnvPacketHandler::registerPayloads);
+    }
+
+    public static void send(ServerPlayer target, CustomPacketPayload message) {
+        PacketDistributor.sendToPlayer(target, message);
+    }
+
+    private static void registerPayloads(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION);
+        registrar.playToClient(EnvDebugPacket.TYPE, EnvDebugPacket.STREAM_CODEC, EnvDebugPacket::handle);
     }
 }

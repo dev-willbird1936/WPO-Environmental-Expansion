@@ -1,10 +1,12 @@
 import java.util.Properties
 
 plugins {
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'java-library'
+    id 'idea'
+    id 'net.neoforged.moddev' version '2.0.141'
 }
 
-def selectedMcVersion = (findProperty('mcVersion') ?: findProperty('default_mc_version') ?: '1.20.1').toString()
+def selectedMcVersion = (findProperty('mcVersion') ?: findProperty('default_mc_version') ?: '1.21.1').toString()
 def versionPropsFile = file("versions/${selectedMcVersion}.properties")
 if (!versionPropsFile.isFile()) {
     throw new GradleException("Missing version config for ${selectedMcVersion}: ${versionPropsFile}")
@@ -27,114 +29,89 @@ base {
     archivesName = "wpo_environmental_expansion-${minecraft_version}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-// Define client source set before minecraft block so it exists for the runs config
-sourceSets {
-    client {
-        java {
-            srcDirs = ['src/client/java']
-        }
-        resources {
-            srcDirs = ['src/client/resources']
-        }
-    }
-}
+sourceSets.main.java.srcDir 'src/client/java'
+sourceSets.main.resources.srcDir 'src/client/resources'
 
-sourceSets.client {
-    compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
-    runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
-}
-
-minecraft {
-    mappings channel: mapping_channel, version: mapping_version
-    copyIdeResources = true
+neoForge {
+    version = project.neo_version
 
     runs {
-        configureEach {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                wpo_environmental_expansion {
-                    source sourceSets.main
-                    source sourceSets.client
-                }
-                wpo {
-                    source project(':water_physics_overhaul').sourceSets.main
-                }
-                skds_core {
-                    source project(':skds_core').sourceSets.main
-                }
-            }
-        }
-
         client {
-            property 'forge.enabledGameTestNamespaces', 'wpo_environmental_expansion'
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'wpo_environmental_expansion'
         }
 
         server {
-            property 'forge.enabledGameTestNamespaces', 'wpo_environmental_expansion'
-            args '--nogui'
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'wpo_environmental_expansion'
         }
 
         gameTestServer {
-            property 'forge.enabledGameTestNamespaces', 'wpo_environmental_expansion'
+            type = 'gameTestServer'
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'wpo_environmental_expansion'
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        wpo_environmental_expansion {
+            sourceSet(sourceSets.main)
+        }
+        wpo {
+            sourceSet(project(':water_physics_overhaul').sourceSets.main)
+        }
+        skds_core {
+            sourceSet(project(':skds_core').sourceSets.main)
         }
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     implementation project(':water_physics_overhaul')
 }
 
 tasks.named('processResources', ProcessResources).configure {
     def replaceProperties = [
-        minecraft_version: minecraft_version,
+        minecraft_version      : minecraft_version,
         minecraft_version_range: minecraft_version_range,
-        forge_version: forge_version,
-        forge_version_range: forge_version_range,
-        loader_version_range: loader_version_range,
-        mod_id: 'wpo_environmental_expansion',
-        mod_name: 'WPO: Environmental Expansion',
-        mod_version: version,
-        mod_license: 'All Rights Reserved',
-        mod_authors: project.findProperty('project_public_author'),
-        mod_description: 'Weather-driven runoff, puddles, evaporation, absorption, and collection systems for Water Physics Overhaul.',
-        wpo_version_range: "[${wpo_mod_version},)"
+        neo_version            : neo_version,
+        loader_version_range   : loader_version_range,
+        mod_id                 : 'wpo_environmental_expansion',
+        mod_name               : 'WPO: Environmental Expansion',
+        mod_version            : version,
+        mod_license            : 'All Rights Reserved',
+        mod_authors            : project.findProperty('project_public_author'),
+        mod_description        : 'Weather-driven runoff, puddles, evaporation, absorption, and collection systems for Water Physics Overhaul.',
+        wpo_version_range      : "[${wpo_mod_version},)"
     ]
     inputs.properties replaceProperties
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
         expand replaceProperties
     }
 }
 
 tasks.named('jar', Jar).configure {
-    from(sourceSets.client.output)
     manifest {
         attributes([
-            'Specification-Title': 'wpo_environmental_expansion',
-            'Specification-Vendor': project.findProperty('project_public_vendor'),
-            'Specification-Version': '1',
-            'Implementation-Title': project.name,
+            'Specification-Title'   : 'wpo_environmental_expansion',
+            'Specification-Vendor'  : project.findProperty('project_public_vendor'),
+            'Specification-Version' : '1',
+            'Implementation-Title'  : project.name,
             'Implementation-Version': project.version,
             'Implementation-Vendor' : project.findProperty('project_public_vendor')
         ])
     }
-    finalizedBy 'reobfJar'
-}
-
-tasks.register('packageModJar', Copy) {
-    dependsOn tasks.named('reobfJar')
-    from(layout.buildDirectory.file('reobfJar/output.jar'))
-    into(layout.buildDirectory.dir('libs'))
-    rename { "${base.archivesName.get()}-${project.version}.jar" }
-}
-
-tasks.named('build').configure {
-    dependsOn tasks.named('packageModJar')
 }
 
 tasks.register('stageRelease', Copy) {
@@ -142,4 +119,15 @@ tasks.register('stageRelease', Copy) {
     from(layout.buildDirectory.dir('libs'))
     include "${base.archivesName.get()}-${project.version}.jar"
     into releaseOutputDir
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

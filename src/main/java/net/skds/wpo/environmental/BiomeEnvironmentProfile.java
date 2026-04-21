@@ -490,6 +490,10 @@ public record BiomeEnvironmentProfile(
         };
     }
 
+    public static BiomeEnvironmentProfile forArchetype(Archetype archetype) {
+        return profileFor(archetype);
+    }
+
     private static double weightedSquare(double value, double target, double weight) {
         double delta = value - target;
         return delta * delta * weight;
