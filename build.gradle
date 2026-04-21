@@ -1,10 +1,26 @@
+import java.util.Properties
+
 plugins {
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
 }
 
-evaluationDependsOn(':water_physics_overhaul_1.20.1')
+def selectedMcVersion = (findProperty('mcVersion') ?: findProperty('default_mc_version') ?: '1.20.1').toString()
+def versionPropsFile = file("versions/${selectedMcVersion}.properties")
+if (!versionPropsFile.isFile()) {
+    throw new GradleException("Missing version config for ${selectedMcVersion}: ${versionPropsFile}")
+}
 
-version = project.findProperty('wpo_environmental_mod_version')
+def versionProps = new Properties()
+versionPropsFile.withInputStream { versionProps.load(it) }
+versionProps.each { key, value ->
+    ext.set(key.toString(), value.toString())
+}
+
+def releaseOutputDir = rootProject.file("../../releases/WPO-Environmental-Expansion/${selectedMcVersion}")
+
+evaluationDependsOn(':water_physics_overhaul')
+
+version = wpo_environmental_mod_version
 group = 'net.skds.wpo.environmental'
 
 base {
@@ -25,6 +41,11 @@ sourceSets {
     }
 }
 
+sourceSets.client {
+    compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+    runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+}
+
 minecraft {
     mappings channel: mapping_channel, version: mapping_version
     copyIdeResources = true
@@ -41,10 +62,10 @@ minecraft {
                     source sourceSets.client
                 }
                 wpo {
-                    source project(':water_physics_overhaul_1.20.1').sourceSets.main
+                    source project(':water_physics_overhaul').sourceSets.main
                 }
                 skds_core {
-                    source project(':skds_core_1.20.1').sourceSets.main
+                    source project(':skds_core').sourceSets.main
                 }
             }
         }
@@ -66,7 +87,7 @@ minecraft {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation project(':water_physics_overhaul_1.20.1')
+    implementation project(':water_physics_overhaul')
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -82,7 +103,7 @@ tasks.named('processResources', ProcessResources).configure {
         mod_license: 'All Rights Reserved',
         mod_authors: project.findProperty('project_public_author'),
         mod_description: 'Weather-driven runoff, puddles, evaporation, absorption, and collection systems for Water Physics Overhaul.',
-        wpo_version_range: "[${project.findProperty('wpo_mod_version')},)"
+        wpo_version_range: "[${wpo_mod_version},)"
     ]
     inputs.properties replaceProperties
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
@@ -91,6 +112,7 @@ tasks.named('processResources', ProcessResources).configure {
 }
 
 tasks.named('jar', Jar).configure {
+    from(sourceSets.client.output)
     manifest {
         attributes([
             'Specification-Title': 'wpo_environmental_expansion',
@@ -113,4 +135,11 @@ tasks.register('packageModJar', Copy) {
 
 tasks.named('build').configure {
     dependsOn tasks.named('packageModJar')
+}
+
+tasks.register('stageRelease', Copy) {
+    dependsOn tasks.named('build')
+    from(layout.buildDirectory.dir('libs'))
+    include "${base.archivesName.get()}-${project.version}.jar"
+    into releaseOutputDir
 }

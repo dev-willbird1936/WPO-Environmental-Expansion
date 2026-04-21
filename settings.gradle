@@ -16,20 +16,27 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.7.0'
 }
 
-rootProject.name = 'WPO-Environmental-Expansion-1.20.1'
+rootProject.name = 'WPO-Environmental-Expansion'
 
-def skdsDir = file('../SKDS-Core-1.20.1')
-if (!skdsDir.isDirectory()) {
-    throw new GradleException('Clone SKDS-Core-1.20.1 next to this repository at ../SKDS-Core-1.20.1 before building WPO Environmental Expansion.')
+def resolveSiblingRepo(String name) {
+    [
+        file("../${name}"),
+        file("../${name}/repo")
+    ].find { it.isDirectory() }
 }
 
-def wpoDir = file('../Water-Physics-Overhaul-1.20.1')
-if (!wpoDir.isDirectory()) {
-    throw new GradleException('Clone Water-Physics-Overhaul-1.20.1 next to this repository at ../Water-Physics-Overhaul-1.20.1 before building WPO Environmental Expansion.')
+def skdsDir = resolveSiblingRepo('SKDS-Core')
+if (!skdsDir) {
+    throw new GradleException('Clone SKDS-Core next to this repository at ../SKDS-Core before building WPO Environmental Expansion.')
 }
 
-include 'skds_core_1.20.1'
-project(':skds_core_1.20.1').projectDir = skdsDir
+def wpoDir = resolveSiblingRepo('Water-Physics-Overhaul')
+if (!wpoDir) {
+    throw new GradleException('Clone Water-Physics-Overhaul next to this repository at ../Water-Physics-Overhaul before building WPO Environmental Expansion.')
+}
 
-include 'water_physics_overhaul_1.20.1'
-project(':water_physics_overhaul_1.20.1').projectDir = wpoDir
+include 'skds_core'
+project(':skds_core').projectDir = skdsDir
+
+include 'water_physics_overhaul'
+project(':water_physics_overhaul').projectDir = wpoDir
