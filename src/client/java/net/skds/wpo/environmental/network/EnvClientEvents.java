@@ -5,10 +5,11 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.skds.wpo.environmental.EnvironmentalClientConfig;
 
 /**
  * Client-side event subscriber for the WPO Environmental debug overlay.
- * Renders the overlay when F3 is open and handles the F6 debug menu toggle.
+ * Renders the environmental lines in the vanilla debug HUD and handles the F6 toggle.
  */
 public class EnvClientEvents {
 
@@ -19,7 +20,7 @@ public class EnvClientEvents {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.screen instanceof EnvDebugScreen) {
+        if (!EnvironmentalClientConfig.isCompactDebugOverlayEnabled()) {
             return;
         }
 
@@ -34,7 +35,7 @@ public class EnvClientEvents {
         }
 
         if (EnvClientKeyMappings.OPEN_ENV_DEBUG.consumeClick()) {
-            EnvDebugScreen.toggle();
+            EnvironmentalClientConfig.setCompactDebugOverlayEnabled(!EnvironmentalClientConfig.isCompactDebugOverlayEnabled());
         }
     }
 }

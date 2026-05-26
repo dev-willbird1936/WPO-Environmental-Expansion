@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.skds.wpo.api.WPOFluidAccess;
@@ -241,6 +242,10 @@ public final class EnvironmentalBenchmarkManager {
             case CONDENSATION -> "condensation";
             case FREEZE -> "freezing";
             case THAW -> "thaw";
+            case RAIN_ACCUMULATION -> "rain accumulation";
+            case STORM_FLOOD -> "storm flood";
+            case SNOWMELT -> "snowmelt";
+            case DROUGHT_EVAPORATION -> "drought evaporation";
             case AGRICULTURE_HYDRATION -> "agriculture hydration";
             case AGRICULTURE_GROWTH -> "agriculture growth";
         };
@@ -269,6 +274,10 @@ public final class EnvironmentalBenchmarkManager {
         CONDENSATION("condensation"),
         FREEZE("freeze"),
         THAW("thaw"),
+        RAIN_ACCUMULATION("rain_accumulation"),
+        STORM_FLOOD("storm_flood"),
+        SNOWMELT("snowmelt"),
+        DROUGHT_EVAPORATION("drought_evaporation"),
         AGRICULTURE_HYDRATION("agriculture_hydration"),
         AGRICULTURE_GROWTH("agriculture_growth");
 
@@ -296,6 +305,10 @@ public final class EnvironmentalBenchmarkManager {
         CONDENSATION,
         FREEZE,
         THAW,
+        RAIN_ACCUMULATION,
+        STORM_FLOOD,
+        SNOWMELT,
+        DROUGHT_EVAPORATION,
         AGRICULTURE_HYDRATION,
         AGRICULTURE_GROWTH
     }
@@ -411,6 +424,26 @@ public final class EnvironmentalBenchmarkManager {
                 thawTrial("riparian_wetland_x4", BiomeEnvironmentProfile.Archetype.RIPARIAN_WETLAND, 2.20F, 4.0D),
                 thawTrial("riparian_wetland_x8", BiomeEnvironmentProfile.Archetype.RIPARIAN_WETLAND, 2.20F, 8.0D)
             );
+            case RAIN_ACCUMULATION -> List.of(
+                rainTrial("spring_rain_x1", BiomeEnvironmentProfile.Archetype.BALANCED_TEMPERATE, 0.80F, SeasonManager.SubSeason.MID_SPRING, 6000L, 1.0D),
+                rainTrial("spring_rain_x2", BiomeEnvironmentProfile.Archetype.BALANCED_TEMPERATE, 0.80F, SeasonManager.SubSeason.MID_SPRING, 6000L, 2.0D),
+                rainTrial("spring_rain_x4", BiomeEnvironmentProfile.Archetype.BALANCED_TEMPERATE, 0.80F, SeasonManager.SubSeason.MID_SPRING, 6000L, 4.0D)
+            );
+            case STORM_FLOOD -> List.of(
+                stormFloodTrial("summer_storm_x1", BiomeEnvironmentProfile.Archetype.RIPARIAN_WETLAND, 1.20F, SeasonManager.SubSeason.MID_SUMMER, 6000L, 1.0D),
+                stormFloodTrial("summer_storm_x2", BiomeEnvironmentProfile.Archetype.RIPARIAN_WETLAND, 1.20F, SeasonManager.SubSeason.MID_SUMMER, 6000L, 2.0D),
+                stormFloodTrial("summer_storm_x4", BiomeEnvironmentProfile.Archetype.RIPARIAN_WETLAND, 1.20F, SeasonManager.SubSeason.MID_SUMMER, 6000L, 4.0D)
+            );
+            case SNOWMELT -> List.of(
+                snowmeltTrial("spring_snowmelt_x1", BiomeEnvironmentProfile.Archetype.SNOWMELT_ALPINE, 0.95F, 1.0D),
+                snowmeltTrial("spring_snowmelt_x2", BiomeEnvironmentProfile.Archetype.SNOWMELT_ALPINE, 0.95F, 2.0D),
+                snowmeltTrial("spring_snowmelt_x4", BiomeEnvironmentProfile.Archetype.SNOWMELT_ALPINE, 0.95F, 4.0D)
+            );
+            case DROUGHT_EVAPORATION -> List.of(
+                droughtEvaporationTrial("drought_evaporation_x1", 1.0D),
+                droughtEvaporationTrial("drought_evaporation_x2", 2.0D),
+                droughtEvaporationTrial("drought_evaporation_x4", 4.0D)
+            );
             case AGRICULTURE_HYDRATION -> List.of(
                 agricultureHydrationTrial("agriculture_hydration_x1", 1.0D),
                 agricultureHydrationTrial("agriculture_hydration_x2", 2.0D),
@@ -442,6 +475,22 @@ public final class EnvironmentalBenchmarkManager {
 
     private static TrialDefinition thawTrial(String id, BiomeEnvironmentProfile.Archetype archetype, float biomeTemperature, double multiplier) {
         return new TrialDefinition(id, TrialKind.THAW, archetype, biomeTemperature, SeasonManager.SubSeason.MID_SUMMER, 6000L, WeatherSetting.CLEAR, multiplier, TRIAL_DURATION_TICKS, TRIAL_DURATION_TICKS);
+    }
+
+    private static TrialDefinition rainTrial(String id, BiomeEnvironmentProfile.Archetype archetype, float biomeTemperature, SeasonManager.SubSeason subSeason, long timeOfDay, double multiplier) {
+        return new TrialDefinition(id, TrialKind.RAIN_ACCUMULATION, archetype, biomeTemperature, subSeason, timeOfDay, WeatherSetting.RAIN, multiplier, TRIAL_DURATION_TICKS, TRIAL_DURATION_TICKS);
+    }
+
+    private static TrialDefinition stormFloodTrial(String id, BiomeEnvironmentProfile.Archetype archetype, float biomeTemperature, SeasonManager.SubSeason subSeason, long timeOfDay, double multiplier) {
+        return new TrialDefinition(id, TrialKind.STORM_FLOOD, archetype, biomeTemperature, subSeason, timeOfDay, WeatherSetting.THUNDER, multiplier, TRIAL_DURATION_TICKS, TRIAL_DURATION_TICKS);
+    }
+
+    private static TrialDefinition snowmeltTrial(String id, BiomeEnvironmentProfile.Archetype archetype, float biomeTemperature, double multiplier) {
+        return new TrialDefinition(id, TrialKind.SNOWMELT, archetype, biomeTemperature, SeasonManager.SubSeason.MID_SPRING, 6000L, WeatherSetting.CLEAR, multiplier, TRIAL_DURATION_TICKS, TRIAL_DURATION_TICKS);
+    }
+
+    private static TrialDefinition droughtEvaporationTrial(String id, double multiplier) {
+        return new TrialDefinition(id, TrialKind.DROUGHT_EVAPORATION, BiomeEnvironmentProfile.Archetype.ARID_DROUGHT, 2.10F, SeasonManager.SubSeason.MID_SUMMER, 6000L, WeatherSetting.CLEAR, multiplier, TRIAL_DURATION_TICKS, TRIAL_DURATION_TICKS);
     }
 
     private static TrialDefinition agricultureHydrationTrial(String id, double multiplier) {
@@ -480,6 +529,38 @@ public final class EnvironmentalBenchmarkManager {
             );
             case FREEZE -> buildSteppedIceWaterLanes(false);
             case THAW -> buildSteppedIceWaterLanes(true);
+            case RAIN_ACCUMULATION -> List.of(
+                simpleLane("stone_puddle_a", Blocks.STONE.defaultBlockState(), 0, 0, 0),
+                simpleLane("stone_puddle_b", Blocks.STONE.defaultBlockState(), 0, 0, 0),
+                simpleLane("dirt_puddle_a", Blocks.DIRT.defaultBlockState(), 0, 0, 0),
+                simpleLane("grass_puddle_a", Blocks.GRASS_BLOCK.defaultBlockState(), 0, 0, 0),
+                cauldronLane("water_cauldron_a", 1),
+                cauldronLane("water_cauldron_b", 1)
+            );
+            case STORM_FLOOD -> List.of(
+                simpleLane("stone_flood_a", Blocks.STONE.defaultBlockState(), 0, 0, 0),
+                simpleLane("stone_flood_b", Blocks.STONE.defaultBlockState(), 0, 0, 0),
+                simpleLane("dirt_flood_a", Blocks.DIRT.defaultBlockState(), 0, 0, 0),
+                simpleLane("mud_flood_a", Blocks.MUD.defaultBlockState(), 0, 0, 0),
+                cauldronLane("storm_cauldron_a", 1),
+                cauldronLane("storm_cauldron_b", 1)
+            );
+            case SNOWMELT -> List.of(
+                snowLane("snow_layers_1", 1),
+                snowLane("snow_layers_3", 3),
+                snowLane("snow_layers_5", 5),
+                snowLane("snow_layers_7", 7),
+                snowLane("snow_block_a", 8),
+                snowLane("snow_block_b", 8)
+            );
+            case DROUGHT_EVAPORATION -> List.of(
+                simpleLane("drought_water_a", Blocks.STONE.defaultBlockState(), 4, 0, 0),
+                simpleLane("drought_water_b", Blocks.STONE.defaultBlockState(), 4, 0, 0),
+                simpleLane("drought_water_c", Blocks.STONE.defaultBlockState(), 4, 0, 0),
+                simpleLane("drought_water_d", Blocks.STONE.defaultBlockState(), 4, 0, 0),
+                simpleLane("drought_water_e", Blocks.STONE.defaultBlockState(), 4, 0, 0),
+                simpleLane("drought_water_f", Blocks.STONE.defaultBlockState(), 4, 0, 0)
+            );
             case AGRICULTURE_HYDRATION -> List.of(
                 hydrationLane("absorbed_1", 1),
                 hydrationLane("absorbed_2", 2),
@@ -511,6 +592,13 @@ public final class EnvironmentalBenchmarkManager {
 
     private static LanePlan cauldronLane(String name, int level) {
         return new LanePlan(name, Blocks.WATER_CAULDRON.defaultBlockState().setValue(BlockStateProperties.LEVEL_CAULDRON, Mth.clamp(level, 1, 3)), Blocks.AIR.defaultBlockState(), 0, 0, 0);
+    }
+
+    private static LanePlan snowLane(String name, int layers) {
+        BlockState state = layers >= 8
+            ? Blocks.SNOW_BLOCK.defaultBlockState()
+            : Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, Mth.clamp(layers, 1, 7));
+        return new LanePlan(name, state, Blocks.AIR.defaultBlockState(), 0, 0, 0);
     }
 
     private static LanePlan hydrationLane(String name, int absorbed) {
@@ -627,12 +715,29 @@ public final class EnvironmentalBenchmarkManager {
         return BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
     }
 
-    private static double benchmarkTargetChancePct(TrialDefinition definition, EnvironmentalTicker.ColumnMetrics metrics) {
+    private static double benchmarkTargetChancePct(ServerLevel level, BlockPos groundPos, BlockPos airPos, TrialDefinition definition, EnvironmentalTicker.ColumnMetrics metrics) {
         return switch (definition.kind) {
-            case EVAPORATION -> EnvironmentalConfig.COMMON.evaporationChance.get()
-                * metrics.evaporationMultiplier()
-                * EnvironmentalConfig.COMMON.evaporationMultiplierOverride.get()
-                * 100.0D;
+            case EVAPORATION, DROUGHT_EVAPORATION -> EnvironmentalTicker.getEvaporationChanceForBenchmark(
+                level,
+                groundPos,
+                airPos,
+                EnvironmentalSavedData.get(level),
+                BiomeEnvironmentProfile.forArchetype(definition.archetype)
+            ) * 100.0D;
+            case RAIN_ACCUMULATION, STORM_FLOOD -> EnvironmentalTicker.getRainAccumulationExpectedStepsForBenchmark(
+                level,
+                groundPos,
+                airPos,
+                EnvironmentalSavedData.get(level),
+                BiomeEnvironmentProfile.forArchetype(definition.archetype)
+            ) * 100.0D;
+            case SNOWMELT -> EnvironmentalTicker.getSnowmeltChanceForBenchmark(
+                level,
+                groundPos,
+                airPos,
+                EnvironmentalSavedData.get(level),
+                BiomeEnvironmentProfile.forArchetype(definition.archetype)
+            ) * 100.0D;
             case ABSORPTION -> EnvironmentalConfig.COMMON.absorptionChance.get()
                 * metrics.absorptionMultiplier()
                 * EnvironmentalConfig.COMMON.absorptionMultiplierOverride.get()
@@ -643,6 +748,77 @@ public final class EnvironmentalBenchmarkManager {
             case AGRICULTURE_HYDRATION -> 0.0D;
             case AGRICULTURE_GROWTH -> metrics.agricultureGrowthChancePct();
         };
+    }
+
+    private static JsonObject configSnapshot() {
+        JsonObject json = new JsonObject();
+        json.addProperty("rainChance", EnvironmentalConfig.COMMON.rainChance.get());
+        json.addProperty("rainIntensity", EnvironmentalConfig.COMMON.rainIntensity.get());
+        json.addProperty("stormIntensity", EnvironmentalConfig.COMMON.stormIntensity.get());
+        json.addProperty("condensationChance", EnvironmentalConfig.COMMON.condensationChance.get());
+        json.addProperty("surfaceFreezeChance", EnvironmentalConfig.COMMON.surfaceFreezeChance.get());
+        json.addProperty("snowmeltChance", EnvironmentalConfig.COMMON.snowmeltChance.get());
+        json.addProperty("evaporationChance", EnvironmentalConfig.COMMON.evaporationChance.get());
+        json.addProperty("droughtEvaporationBonus", EnvironmentalConfig.COMMON.droughtEvaporationBonus.get());
+        json.addProperty("absorptionChance", EnvironmentalConfig.COMMON.absorptionChance.get());
+        json.addProperty("releaseChance", EnvironmentalConfig.COMMON.releaseChance.get());
+        json.addProperty("agricultureGrowthBoostChance", EnvironmentalConfig.COMMON.agricultureGrowthBoostChance.get());
+        json.addProperty("evaporationMultiplierOverride", EnvironmentalConfig.COMMON.evaporationMultiplierOverride.get());
+        json.addProperty("absorptionMultiplierOverride", EnvironmentalConfig.COMMON.absorptionMultiplierOverride.get());
+        json.addProperty("condensationMultiplierOverride", EnvironmentalConfig.COMMON.condensationMultiplierOverride.get());
+        json.addProperty("surfaceIceMultiplierOverride", EnvironmentalConfig.COMMON.surfaceIceMultiplierOverride.get());
+        json.addProperty("agricultureMultiplierOverride", EnvironmentalConfig.COMMON.agricultureMultiplierOverride.get());
+        json.addProperty("updateInterval", EnvironmentalConfig.COMMON.updateInterval.get());
+        return json;
+    }
+
+    private static double scaleClamped(double base, double multiplier, double min, double max) {
+        return Mth.clamp(base * multiplier, min, max);
+    }
+
+    private static int plannedSnowLayers(LanePlan plan) {
+        if (plan.supportState.is(Blocks.SNOW_BLOCK)) {
+            return 8;
+        }
+        if (plan.supportState.is(Blocks.SNOW) && plan.supportState.hasProperty(SnowLayerBlock.LAYERS)) {
+            return plan.supportState.getValue(SnowLayerBlock.LAYERS);
+        }
+        return 0;
+    }
+
+    private static boolean isRainTrial(TrialKind kind) {
+        return kind == TrialKind.RAIN_ACCUMULATION || kind == TrialKind.STORM_FLOOD;
+    }
+
+    private static boolean isEvaporationTrial(TrialKind kind) {
+        return kind == TrialKind.EVAPORATION || kind == TrialKind.DROUGHT_EVAPORATION;
+    }
+
+    private static boolean isWeatheredCauldronLane(TrialKind kind, BlockState supportState) {
+        return isRainTrial(kind) && supportState.getBlock() instanceof LayeredCauldronBlock;
+    }
+
+    private static double cauldronRainTargetChancePct(ServerLevel level, BlockPos groundPos, BiomeEnvironmentProfile profile) {
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        EnvironmentalSavedData data = EnvironmentalSavedData.get(level);
+        double intensity = EnvironmentalConfig.COMMON.rainIntensity.get() * profile.rainIntensityMultiplier();
+        intensity *= SeasonalModifiers.getRainIntensityMultiplier(subSeason);
+        if (EnvironmentalConfig.COMMON.droughts.get() && data.isDroughtActive()) {
+            intensity *= Mth.clamp(1.0D - (0.6D * profile.droughtSensitivity() * SeasonalModifiers.getDroughtSensitivity(subSeason)), 0.2D, 1.0D);
+        }
+        if (groundPos.getY() >= level.getMinBuildHeight() && EnvironmentalTicker.captureColumnMetrics(level, groundPos, groundPos.above()).biomeTemp() < 0.15F) {
+            intensity *= 0.75D;
+        }
+        intensity *= SeasonalModifiers.getCollectorMultiplier(subSeason);
+        intensity *= DayNightModifiers.getCollectorMultiplier(level, profile);
+        return 0.10D * intensity * profile.rainChanceMultiplier() * SeasonalModifiers.getRainChanceMultiplier(subSeason) * 100.0D;
+    }
+
+    private static double maybeCauldronAdjustedTargetChancePct(ServerLevel level, BlockPos groundPos, BlockPos airPos, TrialDefinition definition, BlockState groundState, EnvironmentalTicker.ColumnMetrics metrics) {
+        if (isWeatheredCauldronLane(definition.kind, groundState)) {
+            return cauldronRainTargetChancePct(level, groundPos, BiomeEnvironmentProfile.forArchetype(definition.archetype));
+        }
+        return benchmarkTargetChancePct(level, groundPos, airPos, definition, metrics);
     }
 
     private static LaneDiagnostics captureDiagnostics(ServerLevel level, TrialDefinition definition, ArenaLane lane, LaneState state, EnvironmentalTicker.ColumnMetrics metrics) {
@@ -656,7 +832,7 @@ public final class EnvironmentalBenchmarkManager {
         boolean canHoldSurfacePuddle = EnvironmentalTicker.canHoldSurfacePuddleForBenchmark(level, groundPos, airPos, groundState);
         boolean nearbyHydratingWater = EnvironmentalTicker.hasNearbyHydratingWaterForBenchmark(level, groundPos);
         boolean nearbyHeatSource = EnvironmentalTicker.hasNearbyHeatSourceForBenchmark(level, groundPos);
-        double targetChancePct = benchmarkTargetChancePct(definition, metrics);
+        double targetChancePct = maybeCauldronAdjustedTargetChancePct(level, groundPos, airPos, definition, groundState, metrics);
 
         String waterColumn = "none";
         if (WPOFluidAccess.getWaterAmount(level, airPos.above()) > 0) {
@@ -670,13 +846,16 @@ public final class EnvironmentalBenchmarkManager {
         boolean eligible;
         String reason;
         switch (definition.kind) {
-            case EVAPORATION -> {
+            case EVAPORATION, DROUGHT_EVAPORATION -> {
                 if (!canSeeSky) {
                     eligible = false;
                     reason = "no_sky";
                 } else if (state.surfaceWater <= 0) {
                     eligible = false;
                     reason = "no_exposed_water";
+                } else if (definition.kind == TrialKind.DROUGHT_EVAPORATION && !metrics.droughtActive()) {
+                    eligible = false;
+                    reason = "drought_inactive";
                 } else if (targetChancePct <= 0.0D) {
                     eligible = false;
                     reason = "zero_evaporation_chance";
@@ -746,6 +925,42 @@ public final class EnvironmentalBenchmarkManager {
                 } else if (targetChancePct <= 0.0D) {
                     eligible = false;
                     reason = "zero_thaw_chance";
+                } else {
+                    eligible = true;
+                    reason = "ok";
+                }
+            }
+            case RAIN_ACCUMULATION, STORM_FLOOD -> {
+                if (!metrics.isRaining()) {
+                    eligible = false;
+                    reason = "not_raining";
+                } else if (definition.kind == TrialKind.STORM_FLOOD && !metrics.isThundering()) {
+                    eligible = false;
+                    reason = "not_thundering";
+                } else if (!canSeeSky) {
+                    eligible = false;
+                    reason = "no_sky";
+                } else if (groundState.getBlock() instanceof LayeredCauldronBlock) {
+                    eligible = state.cauldronLevel >= 0 && state.cauldronLevel < 3 && targetChancePct > 0.0D;
+                    reason = eligible ? "ok" : (state.cauldronLevel >= 3 ? "cauldron_full" : "zero_rain_chance");
+                } else if (!canHoldSurfacePuddle) {
+                    eligible = false;
+                    reason = "cannot_hold_puddle";
+                } else if (targetChancePct <= 0.0D) {
+                    eligible = false;
+                    reason = "zero_rain_chance";
+                } else {
+                    eligible = true;
+                    reason = "ok";
+                }
+            }
+            case SNOWMELT -> {
+                if (state.snowLayers <= 0) {
+                    eligible = false;
+                    reason = "no_snow";
+                } else if (targetChancePct <= 0.0D) {
+                    eligible = false;
+                    reason = "zero_snowmelt_chance";
                 } else {
                     eligible = true;
                     reason = "ok";
@@ -919,10 +1134,11 @@ public final class EnvironmentalBenchmarkManager {
 
         private void configureTrial(ServerLevel level, TrialDefinition definition) {
             EnvironmentalSavedData data = EnvironmentalSavedData.get(level);
-            data.setDroughtScore(0);
+            data.setDroughtScore(definition.kind == TrialKind.DROUGHT_EVAPORATION ? EnvironmentalConfig.COMMON.droughtThreshold.get() + 1000 : 0);
             int ambientWetness = switch (definition.kind) {
                 case CONDENSATION -> Math.max(1, (int) Math.round(EnvironmentalConfig.COMMON.ambientWetnessCap.get() * 0.80D));
                 case EVAPORATION -> 0;
+                case RAIN_ACCUMULATION, STORM_FLOOD -> 0;
                 case FREEZE -> Math.max(0, (int) Math.round(EnvironmentalConfig.COMMON.ambientWetnessCap.get() * 0.15D));
                 case THAW -> Math.max(0, (int) Math.round(EnvironmentalConfig.COMMON.ambientWetnessCap.get() * 0.25D));
                 default -> 0;
@@ -941,18 +1157,22 @@ public final class EnvironmentalBenchmarkManager {
 
             EnvironmentalConfig.COMMON.seasons.set(true);
             EnvironmentalConfig.COMMON.tropicalSeasons.set(false);
-            EnvironmentalConfig.COMMON.rainAccumulation.set(false);
+            EnvironmentalConfig.COMMON.rainAccumulation.set(isRainTrial(definition.kind));
             EnvironmentalConfig.COMMON.puddles.set(definition.kind != TrialKind.AGRICULTURE_HYDRATION && definition.kind != TrialKind.AGRICULTURE_GROWTH);
             EnvironmentalConfig.COMMON.distantRainCatchup.set(false);
-            EnvironmentalConfig.COMMON.droughts.set(false);
-            EnvironmentalConfig.COMMON.floods.set(false);
-            EnvironmentalConfig.COMMON.snowmelt.set(false);
+            EnvironmentalConfig.COMMON.droughts.set(definition.kind == TrialKind.DROUGHT_EVAPORATION);
+            EnvironmentalConfig.COMMON.floods.set(definition.kind == TrialKind.STORM_FLOOD);
+            EnvironmentalConfig.COMMON.snowmelt.set(definition.kind == TrialKind.SNOWMELT);
             EnvironmentalConfig.COMMON.absorption.set(definition.kind == TrialKind.ABSORPTION);
-            EnvironmentalConfig.COMMON.evaporation.set(definition.kind == TrialKind.EVAPORATION);
+            EnvironmentalConfig.COMMON.evaporation.set(isEvaporationTrial(definition.kind));
             EnvironmentalConfig.COMMON.condensation.set(definition.kind == TrialKind.CONDENSATION);
             EnvironmentalConfig.COMMON.surfaceIce.set(definition.kind == TrialKind.FREEZE || definition.kind == TrialKind.THAW);
             EnvironmentalConfig.COMMON.agriculture.set(definition.kind == TrialKind.AGRICULTURE_HYDRATION || definition.kind == TrialKind.AGRICULTURE_GROWTH);
             EnvironmentalConfig.COMMON.releaseChance.set(0.0D);
+            EnvironmentalConfig.COMMON.rainIntensity.set(scaleClamped(savedEnvironment.rainIntensity, definition.kind == TrialKind.RAIN_ACCUMULATION ? definition.multiplier : 1.0D, 0.0D, 8.0D));
+            EnvironmentalConfig.COMMON.stormIntensity.set(scaleClamped(savedEnvironment.stormIntensity, definition.kind == TrialKind.STORM_FLOOD ? definition.multiplier : 1.0D, 1.0D, 12.0D));
+            EnvironmentalConfig.COMMON.snowmeltChance.set(scaleClamped(savedEnvironment.snowmeltChance, definition.kind == TrialKind.SNOWMELT ? definition.multiplier : 1.0D, 0.0D, 4.0D));
+            EnvironmentalConfig.COMMON.droughtEvaporationBonus.set(scaleClamped(savedEnvironment.droughtEvaporationBonus, definition.kind == TrialKind.DROUGHT_EVAPORATION ? definition.multiplier : 1.0D, 0.0D, 8.0D));
             EnvironmentalConfig.COMMON.evaporationMultiplierOverride.set(definition.kind == TrialKind.EVAPORATION ? definition.multiplier : 1.0D);
             EnvironmentalConfig.COMMON.absorptionMultiplierOverride.set(definition.kind == TrialKind.ABSORPTION ? definition.multiplier : 1.0D);
             EnvironmentalConfig.COMMON.condensationMultiplierOverride.set(definition.kind == TrialKind.CONDENSATION ? definition.multiplier : 1.0D);
@@ -1141,6 +1361,7 @@ public final class EnvironmentalBenchmarkManager {
             configuration.addProperty("fixedDurationTicks", definition.fixedDurationTicks);
             configuration.addProperty("randomTickSpeed", level.getGameRules().getRule(GameRules.RULE_RANDOMTICKING).get());
             configuration.addProperty("benchmarkUpdateIntervalTicks", Math.max(1, EnvironmentalConfig.COMMON.updateInterval.get()));
+            configuration.add("effectiveConfig", configSnapshot());
             owner.announce(level, owner.trialIndex, "Validating seeded " + prettyKind(definition.kind) + " state before timing starts.");
         }
 
@@ -1329,6 +1550,8 @@ public final class EnvironmentalBenchmarkManager {
             int endAbsorbed = lanes.stream().mapToInt(lane -> lane.latest == null ? 0 : lane.latest.absorbedWater).sum();
             int startIce = lanes.stream().mapToInt(lane -> lane.initial == null ? 0 : lane.initial.surfaceIceLevels).sum();
             int endIce = lanes.stream().mapToInt(lane -> lane.latest == null ? 0 : lane.latest.surfaceIceLevels).sum();
+            int startSnow = lanes.stream().mapToInt(lane -> lane.initial == null ? 0 : lane.initial.snowLayers).sum();
+            int endSnow = lanes.stream().mapToInt(lane -> lane.latest == null ? 0 : lane.latest.snowLayers).sum();
             int startCrop = lanes.stream().mapToInt(lane -> lane.initial == null ? 0 : Math.max(0, lane.initial.cropAge)).sum();
             int endCrop = lanes.stream().mapToInt(lane -> lane.latest == null ? 0 : Math.max(0, lane.latest.cropAge)).sum();
             int startCauldron = lanes.stream().mapToInt(lane -> lane.initial == null ? 0 : Math.max(0, lane.initial.cauldronLevel)).sum();
@@ -1344,6 +1567,9 @@ public final class EnvironmentalBenchmarkManager {
             summary.addProperty("surfaceIceStart", startIce);
             summary.addProperty("surfaceIceEnd", endIce);
             summary.addProperty("surfaceIceDelta", endIce - startIce);
+            summary.addProperty("snowLayersStart", startSnow);
+            summary.addProperty("snowLayersEnd", endSnow);
+            summary.addProperty("snowLayersDelta", endSnow - startSnow);
             summary.addProperty("cropAgeStart", startCrop);
             summary.addProperty("cropAgeEnd", endCrop);
             summary.addProperty("cropAgeDelta", endCrop - startCrop);
@@ -1353,6 +1579,7 @@ public final class EnvironmentalBenchmarkManager {
             summary.addProperty("surfaceWaterRatePer100Ticks", ((endSurface - startSurface) * 100.0D) / elapsed);
             summary.addProperty("absorbedWaterRatePer100Ticks", ((endAbsorbed - startAbsorbed) * 100.0D) / elapsed);
             summary.addProperty("surfaceIceRatePer100Ticks", ((endIce - startIce) * 100.0D) / elapsed);
+            summary.addProperty("snowLayerRatePer100Ticks", ((endSnow - startSnow) * 100.0D) / elapsed);
             summary.addProperty("cropAgeRatePer100Ticks", ((endCrop - startCrop) * 100.0D) / elapsed);
             summary.addProperty("cauldronRatePer100Ticks", ((endCauldron - startCauldron) * 100.0D) / elapsed);
             return summary;
@@ -1437,15 +1664,19 @@ public final class EnvironmentalBenchmarkManager {
             EnvironmentalTicker.ColumnMetrics metrics = EnvironmentalTicker.captureColumnMetrics(level, lane.supportPos, lane.supportPos.above());
             LaneState state = LaneState.capture(level, lane.supportPos, metrics);
             return switch (definition.kind) {
-                case EVAPORATION, ABSORPTION -> state.surfaceWater > 0;
+                case EVAPORATION, DROUGHT_EVAPORATION, ABSORPTION -> state.surfaceWater > 0;
                 case CONDENSATION -> state.surfaceWater == lane.plan.surfaceWater
                     && state.absorbedWater == lane.plan.absorbed
                     && state.surfaceIceLevels == lane.plan.surfaceIce
                     && (lane.plan.supportState.getBlock() instanceof LayeredCauldronBlock
                         ? state.cauldronLevel == lane.plan.supportState.getValue(BlockStateProperties.LEVEL_CAULDRON)
                         : true);
+                case RAIN_ACCUMULATION, STORM_FLOOD -> lane.plan.supportState.getBlock() instanceof LayeredCauldronBlock
+                    ? state.cauldronLevel == lane.plan.supportState.getValue(BlockStateProperties.LEVEL_CAULDRON)
+                    : state.surfaceWater == 0 && state.absorbedWater == lane.plan.absorbed && state.surfaceIceLevels == 0;
                 case FREEZE -> state.surfaceWater == lane.plan.surfaceWater && state.surfaceIceLevels == lane.plan.surfaceIce;
                 case THAW -> state.surfaceWater == lane.plan.surfaceWater && state.surfaceIceLevels == lane.plan.surfaceIce;
+                case SNOWMELT -> state.snowLayers == plannedSnowLayers(lane.plan);
                 case AGRICULTURE_HYDRATION -> state.absorbedWater == lane.plan.absorbed && state.farmlandMoisture == 0;
                 case AGRICULTURE_GROWTH -> state.absorbedWater == lane.plan.absorbed && state.farmlandMoisture == 7 && state.cropAge == 0;
             };
@@ -1453,11 +1684,12 @@ public final class EnvironmentalBenchmarkManager {
 
         private boolean isComplete(TrialKind kind, LaneState state) {
             return switch (kind) {
-                case EVAPORATION -> state.surfaceWater <= 0;
+                case EVAPORATION, DROUGHT_EVAPORATION -> state.surfaceWater <= 0;
                 case ABSORPTION -> state.surfaceWater <= 0;
-                case CONDENSATION -> false;
+                case CONDENSATION, RAIN_ACCUMULATION, STORM_FLOOD -> false;
                 case FREEZE -> state.surfaceWater <= 0 && state.surfaceIceLevels >= lane.plan.surfaceWater;
                 case THAW -> state.surfaceIceLevels <= 0 && state.surfaceWater >= lane.plan.surfaceIce;
+                case SNOWMELT -> state.snowLayers <= 0;
                 case AGRICULTURE_HYDRATION -> state.farmlandMoisture >= 7;
                 case AGRICULTURE_GROWTH -> state.cropAge >= 7;
             };
@@ -1531,6 +1763,10 @@ public final class EnvironmentalBenchmarkManager {
         private boolean agriculture;
         private boolean seasons;
         private boolean tropicalSeasons;
+        private double rainIntensity;
+        private double stormIntensity;
+        private double snowmeltChance;
+        private double droughtEvaporationBonus;
         private double releaseChance;
         private double evaporationMultiplierOverride;
         private double absorptionMultiplierOverride;
@@ -1564,6 +1800,10 @@ public final class EnvironmentalBenchmarkManager {
             agriculture = EnvironmentalConfig.COMMON.agriculture.get();
             seasons = EnvironmentalConfig.COMMON.seasons.get();
             tropicalSeasons = EnvironmentalConfig.COMMON.tropicalSeasons.get();
+            rainIntensity = EnvironmentalConfig.COMMON.rainIntensity.get();
+            stormIntensity = EnvironmentalConfig.COMMON.stormIntensity.get();
+            snowmeltChance = EnvironmentalConfig.COMMON.snowmeltChance.get();
+            droughtEvaporationBonus = EnvironmentalConfig.COMMON.droughtEvaporationBonus.get();
             releaseChance = EnvironmentalConfig.COMMON.releaseChance.get();
             evaporationMultiplierOverride = EnvironmentalConfig.COMMON.evaporationMultiplierOverride.get();
             absorptionMultiplierOverride = EnvironmentalConfig.COMMON.absorptionMultiplierOverride.get();
@@ -1600,6 +1840,10 @@ public final class EnvironmentalBenchmarkManager {
             EnvironmentalConfig.COMMON.agriculture.set(agriculture);
             EnvironmentalConfig.COMMON.seasons.set(seasons);
             EnvironmentalConfig.COMMON.tropicalSeasons.set(tropicalSeasons);
+            EnvironmentalConfig.COMMON.rainIntensity.set(rainIntensity);
+            EnvironmentalConfig.COMMON.stormIntensity.set(stormIntensity);
+            EnvironmentalConfig.COMMON.snowmeltChance.set(snowmeltChance);
+            EnvironmentalConfig.COMMON.droughtEvaporationBonus.set(droughtEvaporationBonus);
             EnvironmentalConfig.COMMON.releaseChance.set(releaseChance);
             EnvironmentalConfig.COMMON.evaporationMultiplierOverride.set(evaporationMultiplierOverride);
             EnvironmentalConfig.COMMON.absorptionMultiplierOverride.set(absorptionMultiplierOverride);

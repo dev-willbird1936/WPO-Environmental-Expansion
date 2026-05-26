@@ -17,6 +17,7 @@ final class EnvironmentalClientHooks {
     }
 
     static void init(IEventBus modBus, ModContainer container) {
+        EnvironmentalClientConfig.init(container);
         modBus.addListener((FMLClientSetupEvent event) -> event.enqueueWork(() -> {
             ItemBlockRenderTypes.setRenderLayer(EnvironmentalContent.SURFACE_ICE.get(), RenderType.translucent());
             container.registerExtensionPoint(

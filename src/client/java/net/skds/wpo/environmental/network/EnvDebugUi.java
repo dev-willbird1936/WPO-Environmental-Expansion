@@ -98,6 +98,33 @@ final class EnvDebugUi {
         return String.format(Locale.ROOT, "%.0f%%", value);
     }
 
+    static String formatWeather(boolean raining, boolean thundering) {
+        if (thundering) {
+            return "Thunder";
+        }
+        return raining ? "Rain" : "Clear";
+    }
+
+    static int weatherColor(boolean raining, boolean thundering) {
+        if (thundering) return 0xFFAA55;
+        if (raining) return 0x6FB7FF;
+        return 0xD8D8D8;
+    }
+
+    static String formatAge(long ageMs) {
+        if (ageMs <= 0L) {
+            return "fresh";
+        }
+        long seconds = ageMs / 1000L;
+        return seconds <= 0L ? "fresh" : seconds + "s old";
+    }
+
+    static int ageColor(long ageMs) {
+        if (ageMs > 5000L) return 0xFF6666;
+        if (ageMs > 2000L) return 0xFFAA55;
+        return 0xAAB2BB;
+    }
+
     static int chanceColor(float chancePct) {
         if (chancePct > 80.0F) return 0xFF6666;
         if (chancePct > 55.0F) return 0xFFAA55;

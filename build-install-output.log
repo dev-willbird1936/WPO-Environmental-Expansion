@@ -1,0 +1,44 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :createMinecraftArtifacts UP-TO-DATE
+> Task :skds_core:createMinecraftArtifacts UP-TO-DATE
+> Task :skds_core:compileJava UP-TO-DATE
+> Task :water_physics_overhaul:createMinecraftArtifacts UP-TO-DATE
+> Task :water_physics_overhaul:compileJava UP-TO-DATE
+> Task :compileJava UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :jarJar NO-SOURCE
+> Task :jar UP-TO-DATE
+> Task :assemble UP-TO-DATE
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :skds_core:processResources UP-TO-DATE
+> Task :skds_core:classes UP-TO-DATE
+> Task :skds_core:jarJar NO-SOURCE
+> Task :skds_core:jar
+> Task :water_physics_overhaul:processResources UP-TO-DATE
+> Task :water_physics_overhaul:classes UP-TO-DATE
+> Task :water_physics_overhaul:jarJar NO-SOURCE
+> Task :water_physics_overhaul:jar
+> Task :test NO-SOURCE
+> Task :check UP-TO-DATE
+> Task :build UP-TO-DATE
+> Task :skds_core:assemble
+> Task :skds_core:compileTestJava NO-SOURCE
+> Task :skds_core:processTestResources NO-SOURCE
+> Task :skds_core:testClasses UP-TO-DATE
+> Task :skds_core:test NO-SOURCE
+> Task :skds_core:check UP-TO-DATE
+> Task :skds_core:build
+> Task :water_physics_overhaul:assemble
+> Task :water_physics_overhaul:compileTestJava NO-SOURCE
+> Task :water_physics_overhaul:processTestResources NO-SOURCE
+> Task :water_physics_overhaul:testClasses UP-TO-DATE
+> Task :water_physics_overhaul:test NO-SOURCE
+> Task :water_physics_overhaul:check UP-TO-DATE
+> Task :water_physics_overhaul:build
+
+BUILD SUCCESSFUL in 8s
+12 actionable tasks: 2 executed, 10 up-to-date
