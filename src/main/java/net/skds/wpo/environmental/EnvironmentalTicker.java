@@ -218,6 +218,43 @@ public final class EnvironmentalTicker {
         return hasNearbyHydratingWater(level, farmlandPos);
     }
 
+    static double getEvaporationChanceForBenchmark(ServerLevel level, BlockPos groundPos, BlockPos airPos, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
+        return EnvironmentalConfig.COMMON.evaporationChance.get()
+            * getEvaporationMultiplier(level, groundPos, airPos, data, profile)
+            * EnvironmentalConfig.COMMON.evaporationMultiplierOverride.get();
+    }
+
+    static double getRainAccumulationExpectedStepsForBenchmark(ServerLevel level, BlockPos groundPos, BlockPos airPos, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        double rainChance = EnvironmentalConfig.COMMON.rainChance.get()
+            * getRainIntensity(level, groundPos, data, profile)
+            * profile.rainChanceMultiplier()
+            * SeasonalModifiers.getRainChanceMultiplier(subSeason)
+            * DayNightModifiers.getRainChanceMultiplier(level);
+        if (EnvironmentalConfig.COMMON.floods.get() && level.isThundering()) {
+            rainChance += rainChance * 0.5D * SeasonalModifiers.getStormMultiplier(subSeason);
+        }
+        return rainChance;
+    }
+
+    static double getSnowmeltChanceForBenchmark(ServerLevel level, BlockPos groundPos, BlockPos airPos, EnvironmentalSavedData data, BiomeEnvironmentProfile profile) {
+        BlockState groundState = level.getBlockState(groundPos);
+        Block groundBlock = groundState.getBlock();
+        if (groundBlock != Blocks.SNOW && groundBlock != Blocks.SNOW_BLOCK) {
+            return 0.0D;
+        }
+        if (!isWarmEnoughToRain(level, groundPos) && level.getMaxLocalRawBrightness(airPos) < 12) {
+            return 0.0D;
+        }
+
+        SeasonManager.SubSeason subSeason = SeasonManager.getSubSeason(level);
+        return EnvironmentalConfig.COMMON.snowmeltChance.get()
+            * getReleaseMultiplier(level, groundPos, profile)
+            * profile.snowmeltMultiplier()
+            * SeasonalModifiers.getSnowmeltMultiplier(subSeason)
+            * DayNightModifiers.getSnowmeltMultiplier(level, profile);
+    }
+
     private static void processFocusedEvaporation(ServerLevel level, EnvironmentalSavedData data) {
         if (!EnvironmentalConfig.COMMON.evaporation.get() || level.players().isEmpty()) {
             return;

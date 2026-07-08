@@ -11,3 +11,5 @@
 /.classpath
 /.factorypath
 /*.iml
+/INTENTION.md
+/build-install-output.log
