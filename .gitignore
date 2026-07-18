@@ -11,5 +11,6 @@
 /.classpath
 /.factorypath
 /*.iml
+/.eclipse/
 /INTENTION.md
 /build-install-output.log
