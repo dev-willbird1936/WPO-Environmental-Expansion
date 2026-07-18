@@ -46,7 +46,7 @@ public final class EnvironmentalTicker {
 
         for (Player player : level.players()) {
             long chunkKey = ChunkPos.asLong(player.blockPosition().getX() >> 4, player.blockPosition().getZ() >> 4);
-            if (data.updatePlayerChunk(player.getUUID(), chunkKey)) {
+            if (data.updatePlayerChunk(player.getUUID(), chunkKey, level.getGameTime())) {
                 materializeArrivalArea(level, player, data);
             }
         }
@@ -401,7 +401,7 @@ public final class EnvironmentalTicker {
 
     private static void spawnDripParticles(ServerLevel level, BlockPos groundPos, BlockPos airPos) {
         if (!level.isRainingAt(airPos) && level.canSeeSky(airPos)) {
-            BlockPos belowAir = airPos.below();
+            BlockPos belowAir = groundPos.below();
             if (level.getBlockState(belowAir).isAir()) {
                 if (rollChance(level, airPos, 0.015D)) {
                     double x = airPos.getX() + 0.5D + (level.random.nextDouble() - 0.5D) * 0.6D;

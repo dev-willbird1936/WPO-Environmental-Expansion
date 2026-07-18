@@ -200,9 +200,9 @@ public class EnvironmentalSavedData extends SavedData {
         return cursor;
     }
 
-    public boolean updatePlayerChunk(UUID playerId, long chunkKey) {
+    public boolean updatePlayerChunk(UUID playerId, long chunkKey, long gameTime) {
         long previous = playerChunks.put(playerId, chunkKey);
-        chunkLastVisit.put(chunkKey, runtimeCursor);
+        chunkLastVisit.put(chunkKey, gameTime);
         return previous != chunkKey;
     }
 

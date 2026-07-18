@@ -135,9 +135,9 @@ public final class SeasonManager {
         int subIndex = (int) ((day / phaseLength) % 4);
         
         if (phase == TropicalPhase.WET) {
-            return subIndex < 2 ? SubSeason.MID_SPRING : SubSeason.LATE_SPRING;
+            return subIndex == 0 ? SubSeason.MID_SPRING : SubSeason.LATE_SPRING;
         } else {
-            return subIndex < 2 ? SubSeason.EARLY_SUMMER : SubSeason.MID_SUMMER;
+            return subIndex == 2 ? SubSeason.EARLY_SUMMER : SubSeason.MID_SUMMER;
         }
     }
 

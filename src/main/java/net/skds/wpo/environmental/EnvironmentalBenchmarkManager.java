@@ -803,6 +803,9 @@ public final class EnvironmentalBenchmarkManager {
         EnvironmentalSavedData data = EnvironmentalSavedData.get(level);
         double intensity = EnvironmentalConfig.COMMON.rainIntensity.get() * profile.rainIntensityMultiplier();
         intensity *= SeasonalModifiers.getRainIntensityMultiplier(subSeason);
+        if (EnvironmentalConfig.COMMON.floods.get() && level.isThundering()) {
+            intensity *= EnvironmentalConfig.COMMON.stormIntensity.get() * SeasonalModifiers.getStormMultiplier(subSeason);
+        }
         if (EnvironmentalConfig.COMMON.droughts.get() && data.isDroughtActive()) {
             intensity *= Mth.clamp(1.0D - (0.6D * profile.droughtSensitivity() * SeasonalModifiers.getDroughtSensitivity(subSeason)), 0.2D, 1.0D);
         }

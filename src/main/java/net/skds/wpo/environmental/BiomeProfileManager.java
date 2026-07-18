@@ -115,7 +115,7 @@ public final class BiomeProfileManager {
             if (BiomeEnvironmentProfile.hasCuratedPreset(id)) {
                 next.put(id, StoredProfile.curated(newBase));
             } else {
-                next.put(id, StoredProfile.generated(newBase));
+                next.put(id, sp.withRebasedNonVanilla(newBase));
             }
         }
         PROFILES.clear();
